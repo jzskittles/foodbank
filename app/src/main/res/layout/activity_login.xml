@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:weightSum="1"
+    tools:context=".Login"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#070d52"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/textView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="#b6eff9"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:allowUndo="true"
+        android:text="Welcome to DeLITE!"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="241dp"
+        android:textColor="#fbf8f8"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_weight="0.08"
+        android:text="Please login or register"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="center_horizontal"/>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#f0f8f9"
+        android:textColorHint="#f7efef"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="Username"/>
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#f0f8f9"
+        android:textColorHint="#f7efef"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="Password"/>
+    <Button
+        android:id="@+id/sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="LOG IN"
+        android:layout_marginTop="16dp" />
+    <Button
+        android:id="@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_weight="0.03"
+        android:text="Register"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

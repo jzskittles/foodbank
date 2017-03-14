@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">DeLITE</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="prompt_password">Password</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_signature">Signature</string>
+    <string name="agreement">Agreement</string>
+    <string name="clear_pad">Clear Pad</string>
+    <string name="save_signature">Save Signature</string>
+    <string name="title_activity_view_signature">viewSignature</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_welcome_navigation">WelcomeNavigation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="title_activity_welcome_nav">Home</string>
+    <string name="title_activity_create">Submit</string>
+
+    <!--Submission Form -->
+    <string-array name="paid_array">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="create">Submit</string>
+    <string name="drafts">Drafts</string>
+    <string name="log">Log</string>
+    <string name="logout">Logout</string>
+    <string name="signature">Signature</string>
+    <string name="add_signature">Add a Signature</string>
+    <string name="view_signature">View Signatures</string>
+    <string name="title_activity_log">Log</string>
+    <string name="title_activity_tab_approved">TabApprovedActivity</string>
+    <string name="title_activity_tab_denied">TabDeniedActivity</string>
+    <string name="title_activity_tab_pending">TabPendingActivity</string>
+    <string name="title_activity_view_form">View Form</string>
+    <string name="title_activity_drafts">Drafts</string>
+    <string name="title_activity_admin_nav">Admin</string>
+    <string name="title_activity_admin_profile">Profile</string>
+    <string name="title_activity_admin_review">Review</string>
+    <string name="title_activity_view_draft">View Draft</string>
+    <string name="title_activity_view_reviewed_form">Review Form</string>
+
+    <color name="white">#FFFFFF</color>
+    <color name="lightBlue">#c2daef</color>
+    <color name="profileBlue">#6fc6f7</color>
+    <color name = "darkSky">#7cbaf3</color>
+    <color name="black">#000000</color>
+    <color name = "transparent_black">#40000000</color>
+
+    <color name = "official">#070d52</color>
+</resources>
