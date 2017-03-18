@@ -32,7 +32,6 @@ public class WelcomeNav extends AppCompatActivity
 
     private SessionManagement session;
     private TextView navDrawerStudentName, navDrawerStudentUsername, navDrawerWelcome, hoursStatus;
-    private ImageView ppl10, ppl9, ppl8, ppl7, ppl6, ppl5, ppl4, ppl3, ppl2, ppl1, ppl0;
     private Button profileButton, draftsButton, submitButton, logButton;
 
     @Override
@@ -79,28 +78,28 @@ public class WelcomeNav extends AppCompatActivity
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(), technovations.ajuj.technovations2017.Profile.class));
+                startActivity(new Intent(getApplicationContext(), Profile.class));
             }
         });
         draftsButton = (Button) findViewById(R.id.draftsButton);
         draftsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(), Drafts.class));
+                startActivity(new Intent(getApplicationContext(), Drafts.class));
             }
         });
         logButton = (Button) findViewById(R.id.logButton);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(), Log.class));
+                startActivity(new Intent(getApplicationContext(), Log.class));
             }
         });
         submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(getApplicationContext(), Create.class));
+                startActivity(new Intent(getApplicationContext(), Create.class));
             }
         });
     }
@@ -144,22 +143,18 @@ public class WelcomeNav extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            //startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
+            startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
         } else if (id == R.id.nav_profile) {
-            //startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), Profile.class));
         } else if (id == R.id.nav_create) {
-            //startActivity(new Intent(getApplicationContext(), Create.class));
+            startActivity(new Intent(getApplicationContext(), Create.class));
         } else if (id == R.id.nav_drafts) {
-            //startActivity(new Intent(getApplicationContext(), Drafts.class));
+            startActivity(new Intent(getApplicationContext(), Drafts.class));
         } else if (id == R.id.nav_log) {
-            //startActivity(new Intent(getApplicationContext(), Log.class));
+            startActivity(new Intent(getApplicationContext(), Log.class));
         } else if (id == R.id.nav_logout) {
             session.logoutUser();
-        } /*else if (id == R.id.nav_signature) {
-            startActivity(new Intent(getApplicationContext(), Signature.class));
-        } else if (id == R.id.nav_view_signature) {
-            startActivity(new Intent(getApplicationContext(), viewSignature.class));
-        } */
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -125,7 +125,6 @@ public class Create extends AppCompatActivity
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paid_array, android.R.layout.activity_create);
             adapter.setDropDownViewResource(android.R.layout.activity_create);
             paid_spinner.setAdapter(adapter); */
-
         orgname = (EditText) findViewById(R.id.orgname_sub);
         orgname.setText("");
         phonenum = (EditText) findViewById(R.id.phonenum_sub);
@@ -140,6 +139,7 @@ public class Create extends AppCompatActivity
         conemail.setText("");
         condate = (EditText) findViewById(R.id.condate_sub);
         condate.setText("");
+
 
 
         submit = (Button) findViewById(R.id.submit_sub);
@@ -201,10 +201,8 @@ public class Create extends AppCompatActivity
                     }
 
                 };
-
-                    requestQueue.add(request);
-                }
-
+                requestQueue.add(request);
+            }
         });
 
         drafts.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +211,6 @@ public class Create extends AppCompatActivity
             public void onClick(View view) {
 
                 URL = "http://ajuj.comlu.com/draft.php";
-
 
                 request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
@@ -263,12 +260,20 @@ public class Create extends AppCompatActivity
                     }
 
                 };
-
                 requestQueue.add(request);
             }
         });
 
 
+    }
+
+    public String convert(Bitmap bitmap) { //bitmap->byte array->base64 string
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        int flags = Base64.NO_WRAP | Base64.URL_SAFE;
+        String str = Base64.encodeToString(bitmapdata, flags);
+        return str;
     }
 
     @Override

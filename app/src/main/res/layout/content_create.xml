@@ -19,11 +19,6 @@
             android:layout_width = "match_parent" android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.github.gcacace.signaturepad.views.SignaturePad
-                android:layout_width="fill_parent"
-                android:layout_height="200dp"
-                android:id="@+id/blankpad" />
-
             <LinearLayout android:id="@+id/LinearLayout02"
                 android:layout_width = "match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -130,12 +125,6 @@
                     android:singleLine="true" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:text="SIGNATURE OF STUDENT"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -213,16 +202,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="date"
                     android:singleLine="true" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="SPONSOR SIGNATURE"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="PARENT SIGNATURE"
-                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:id="@+id/buttons_container"

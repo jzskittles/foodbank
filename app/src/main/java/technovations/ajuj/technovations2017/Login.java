@@ -32,23 +32,34 @@ import java.util.Map;
  * Created by jenny on 3/12/2017.
  */
 
-public class Login extends AppCompatActivity {
-    private EditText username, password;
-    private Button sign_in, register;
+public class Login extends AppCompatActivity{
+
+    private EditText username,password;
+    private Button sign_in;
+    private Button register;
     private RequestQueue requestQueue;
     technovations.ajuj.technovations2017.SessionManagement session;
-    private String URL = " "; //changeable
+
+    private String URL = ""; //changeable
     private StringRequest request;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         sign_in = (Button)findViewById(R.id.sign_in);
         register = (Button)findViewById(R.id.register);
 
+        requestQueue = Volley.newRequestQueue(this);
+
+        session = new SessionManagement(getApplication());
+
+
         URL = "http://ajuj.comlu.com/user_control.php";
+
 
         sign_in.setOnClickListener(new View.OnClickListener(){
 
@@ -72,7 +83,7 @@ public class Login extends AppCompatActivity {
 
                                 session.createLoginSession(user, name, email, year, hours);
                                 if (username.getText().toString().equals("admin") && (password.getText().toString().equals("admin"))) {
-                                    //startActivity(new Intent(getApplicationContext(), AdminNav.class));
+                                    startActivity(new Intent(getApplicationContext(), AdminNav.class));
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
                                 }
@@ -113,5 +124,6 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 
 }
