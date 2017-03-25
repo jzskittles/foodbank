@@ -48,19 +48,19 @@
         android:layout_height="wrap_content"
         android:textColor="#f0f8f9"
         android:textColorHint="#f7efef"
-        android:inputType="text"
         android:maxLines="1"
+        android:inputType="textPassword"
         android:hint="Password"/>
     <Button
         android:id="@+id/sign_in"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="LOG IN"
+        android:layout_height="40dp"
+        android:text="Log In"
         android:layout_marginTop="16dp" />
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:layout_weight="0.03"
         android:text="Register"
         android:layout_marginTop="4dp" />

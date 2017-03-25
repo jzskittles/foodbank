@@ -1,53 +1,51 @@
 package technovations.ajuj.technovations2017;
 
-/**
- * Created by jenny on 3/14/2017.
- */
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.text.Html;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.support.design.widget.NavigationView;
-        import android.support.v4.view.GravityCompat;
-        import android.support.v4.widget.DrawerLayout;
-        import android.support.v7.app.ActionBarDrawerToggle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.Toolbar;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.widget.Button;
-        import android.widget.TextView;
-        import android.widget.Toast;
 
-        import com.android.volley.AuthFailureError;
-        import com.android.volley.Request;
-        import com.android.volley.RequestQueue;
-        import com.android.volley.Response;
-        import com.android.volley.VolleyError;
-        import com.android.volley.toolbox.StringRequest;
-        import com.android.volley.toolbox.Volley;
-        import technovations.ajuj.technovations2017.*;
-        import technovations.ajuj.technovations2017.Log;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import org.json.JSONException;
-        import org.json.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+//import com.technovations.innova.technovations2.*;
+//import com.technovations.innova.technovations2.Log;
 
-        import java.util.HashMap;
-        import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Profile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SessionManagement session;
-    TextView profileUsername, profileName, profileEmail, profileYear, profileHours;
+    TextView profileUsername, profileName, profileEmail, profileNumber, profileAddress, profileOrganization;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
     private Button checkHours;
     String username;
 
-    String URL = "http://ajuj.comlu.com/checkHours.php";
+  /*  String URL = "http://ajuj.comlu.com/checkHours.php";
     private RequestQueue requestQueue;
-    private StringRequest request;
+    private StringRequest request; */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +67,9 @@ public class Profile extends AppCompatActivity
         profileUsername = (TextView) findViewById(R.id.profileUsername);
         profileName = (TextView) findViewById(R.id.profileName);
         profileEmail = (TextView) findViewById(R.id.profileEmail);
-        profileYear= (TextView) findViewById(R.id.profileYear);
-        profileHours= (TextView) findViewById(R.id.profileHours);
+        profileNumber= (TextView) findViewById(R.id.profileNumber);
+        profileAddress= (TextView) findViewById(R.id.profileAddress);
+        profileOrganization = (TextView) findViewById(R.id.profileOrganization);
 
         /**
          * Call this function whenever you want to check user login
@@ -84,15 +83,17 @@ public class Profile extends AppCompatActivity
         username = user.get(SessionManagement.KEY_USERNAME);
         String name = user.get(SessionManagement.KEY_NAME);
         String email = user.get(SessionManagement.KEY_EMAIL);
-        String year = user.get(SessionManagement.KEY_YEAR);
-        final String hours = user.get(SessionManagement.KEY_HOURS);
+        String orgname = user.get(SessionManagement.KEY_ORGNAME);
+        String address = user.get(SessionManagement.KEY_ADDRESS);
+        int phoneNumber = Integer.parseInt(user.get(SessionManagement.KEY_PHONENUMBER));
+        String dorr = user.get(SessionManagement.KEY_DORR);
 
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
         navigationView.addHeaderView(header);
 
 
-        navDrawerStudentName = (TextView) header.findViewById(R.id.navDrawerStudentName);
-        navDrawerStudentUsername = (TextView) header.findViewById(R.id.navDrawerStudentUsername);
+        navDrawerStudentName = (TextView) header.findViewById(R.id.navDrawerName);
+        navDrawerStudentUsername = (TextView) header.findViewById(R.id.navDrawerUsername);
 
         navDrawerStudentName.setText(name);
         navDrawerStudentUsername.setText(username);
@@ -100,61 +101,10 @@ public class Profile extends AppCompatActivity
         profileUsername.setText(Html.fromHtml("<b>User: </b>" + username));
         profileName.setText(Html.fromHtml("<b>Name: </b>" + name));
         profileEmail.setText(Html.fromHtml("<b>Email: </b>" + email));
-        profileYear.setText(Html.fromHtml("<b>Year: </b>" + year));
-        profileHours.setText(Html.fromHtml("<b>Hours: </b> " + hours));
+        profileOrganization.setText(Html.fromHtml("<b>Organization: </b>" + orgname));
+        profileNumber.setText(Html.fromHtml("<b>Phone Number: </b> " + phoneNumber));
+        profileAddress.setText(Html.fromHtml("<b>Address: </b> " + address));
 
-        requestQueue = Volley.newRequestQueue(this);
-        checkHours = (Button) findViewById(R.id.hoursButton);
-        checkHours.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                checkHours(Integer.parseInt(hours));
-            }
-        });
-
-
-    }
-
-    public void checkHours(final int hours) {
-        request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
-                    JSONObject jsonObject = new JSONObject(response);
-                    int length = jsonObject.length();
-                    for(int x = 0; x < length; x++) {
-                        String name = jsonObject.names().get(x).toString();
-                        Toast.makeText(getApplicationContext(),jsonObject.getString(name),Toast.LENGTH_SHORT).show();
-                        if(name.equals("successUpdate")) {
-                            String newHours = jsonObject.getString("totalHours");
-                            session.updateHours(newHours);
-                            profileHours.setText(Html.fromHtml("<b>Hours: </b> " + newHours));
-                        }
-                    }
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error){
-
-            }
-
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> hashMap=new HashMap<String,String>();
-                hashMap.put("username",username);
-                hashMap.put("hours", String.valueOf(hours));
-
-                return hashMap;
-            }
-
-        };
-
-        requestQueue.add(request);
     }
 
     @Override
@@ -194,19 +144,16 @@ public class Profile extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_home_profile) {
+        if (id == R.id.nav_home) {
             startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
-        } else if (id == R.id.nav_profile_profile) {
-            startActivity(new Intent(getApplicationContext(), technovations.ajuj.technovations2017.Profile.class));
-        } else if (id == R.id.nav_create_profile) {
-            startActivity(new Intent(getApplicationContext(), Create.class));
-        } else if (id == R.id.nav_drafts_profile) {
-            startActivity(new Intent(getApplicationContext(), Drafts.class));
-        } else if (id == R.id.nav_log_profile) {
-            startActivity(new Intent(getApplicationContext(), Log.class));
-        } else if (id == R.id.nav_logout_profile) {
+        } else if (id == R.id.nav_profile) {
+            startActivity(new Intent(getApplicationContext(), Profile.class));
+        } else if (id == R.id.nav_log) {
+            //startActivity(new Intent(getApplicationContext(), Log.class));
+        } else if (id == R.id.nav_logout) {
             session.logoutUser();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

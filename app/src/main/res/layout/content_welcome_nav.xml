@@ -20,89 +20,60 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome to VTRACC, user"
+        android:text="Welcome to DeLITE, user"
         android:visibility="visible"
         android:id="@+id/navDrawerWelcome"
         android:gravity="center"
         android:textColor="@color/white"
         android:layout_marginTop="20dp"/>
-    <!--android:layout_gravity="center_vertical"
-     android:layout_alignParentTop="true"-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Hours Status"
-        android:id="@+id/hoursStatus"
-        android:gravity = "center"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/hoursStatus"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/tableLayout">
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/feed_item_margin"
+        android:layout_marginRight="@dimen/feed_item_margin"
+        android:layout_marginTop="@dimen/feed_item_margin"
+        android:background="@drawable/bg_parent_rounded_corner"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/feed_item_padding_top_bottom"
+        android:paddingTop="@dimen/feed_item_padding_top_bottom">
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/feed_item_padding_left_right"
+            android:paddingRight="@dimen/feed_item_padding_left_right">
 
-            <Button
-                android:layout_width="wrap_content"
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/profilePic"
+                android:layout_width="@dimen/feed_item_profile_pic"
+                android:layout_height="@dimen/feed_item_profile_pic"
+                android:scaleType="fitCenter">
+            </com.android.volley.toolbox.NetworkImageView>
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Profile"
-                android:id="@+id/profileButton"
-                android:drawableLeft="@drawable/profile"
-                android:background = "@drawable/home_buttons"
-                style = "@style/homeButton"
-                />
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/feed_item_profile_info_padd" >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit"
-                android:id="@+id/submitButton"
-                android:drawableLeft="@drawable/submit"
-                android:background = "@drawable/home_buttons"
-                style = "@style/homeButton" />
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/feed_item_profile_name"
+                    android:textStyle="bold" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Drafts"
-                android:id="@+id/draftsButton"
-                android:drawableLeft="@drawable/drafts"
-                android:background = "@drawable/home_buttons"
-                style = "@style/homeButton"/>
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/timestamp"
+                    android:textSize="@dimen/feed_item_timestamp" />
+            </LinearLayout>
+        </LinearLayout>
 
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Log"
-                android:id="@+id/logButton"
-                android:drawableLeft="@drawable/log"
-                android:background = "@drawable/home_buttons"
-                style = "@style/homeButton"/>
-        </TableRow>
-
-
-    </TableLayout>
+    </LinearLayout>
 
 
 

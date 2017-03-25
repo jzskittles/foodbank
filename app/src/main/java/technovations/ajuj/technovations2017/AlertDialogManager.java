@@ -1,8 +1,9 @@
 package technovations.ajuj.technovations2017;
 
 /**
- * Created by jenny on 3/12/2017.
+ * Created by Angie on 3/22/2017.
  */
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

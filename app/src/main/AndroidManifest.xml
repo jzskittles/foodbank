@@ -16,9 +16,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="technovations.ajuj.technovations2017.AppController">
         <activity
-            android:name=".Login"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,44 +36,12 @@
             android:label="@string/title_activity_welcome_nav"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Create"
-            android:label="@string/title_activity_create"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Profile"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".Log"
-            android:label="@string/title_activity_log"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ViewForm"
-            android:label="@string/title_activity_view_form"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Drafts"
-            android:label="@string/title_activity_drafts"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AdminNav"
-            android:label="@string/title_activity_admin_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AdminProfile"
-            android:label="@string/title_activity_admin_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AdminReview"
-            android:label="@string/title_activity_admin_review"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".viewDraft"
-            android:label="@string/title_activity_view_draft"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ViewReviewedForm"
-            android:label="@string/title_activity_view_reviewed_form"
+            android:name=".Login"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

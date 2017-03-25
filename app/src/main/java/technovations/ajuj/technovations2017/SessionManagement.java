@@ -1,7 +1,7 @@
 package technovations.ajuj.technovations2017;
 
 /**
- * Created by jenny on 3/12/2017.
+ * Created by Angie on 3/22/2017.
  */
 import java.util.HashMap;
 
@@ -26,11 +26,14 @@ public class SessionManagement {
     private static final String IS_LOGIN = "isLoggedIn";
 
     // User name (make variable public to access from outside)
+    //user, name, orgname, address, phoneNumber, email, dorr
     public static final String KEY_USERNAME = "username";
-    public static final String KEY_EMAIL = "email";
     public static final String KEY_NAME = "name";
-    public static final String KEY_YEAR = "year";
-    public static final String KEY_HOURS = "hour";
+    public static final String KEY_ORGNAME = "orgname";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_PHONENUMBER = "phone number";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_DORR = "dorr";
 
     // Constructor
     public SessionManagement (Context context) {
@@ -39,13 +42,15 @@ public class SessionManagement {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String username, String name, String email, int year, int hours) {
+    public void createLoginSession(String username, String name, String orgname, String address, int phoneNumber, String email, String dorr) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_NAME, name);
+        editor.putString(KEY_ORGNAME, orgname);
+        editor.putString(KEY_ADDRESS, address);
+        editor.putString(KEY_PHONENUMBER, String.valueOf(phoneNumber));
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_YEAR, String.valueOf(year));
-        editor.putString(KEY_HOURS, String.valueOf(hours));
+        editor.putString(KEY_DORR, dorr);
         editor.commit();
     }
 
@@ -53,16 +58,18 @@ public class SessionManagement {
         HashMap<String, String> user = new HashMap<String, String>();
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, "null"));
         user.put(KEY_NAME, pref.getString(KEY_NAME, "null"));
+        user.put(KEY_ORGNAME, pref.getString(KEY_ORGNAME, "null"));
+        user.put(KEY_ADDRESS, pref.getString(KEY_ADDRESS, "null"));
+        user.put(KEY_PHONENUMBER, pref.getString(KEY_PHONENUMBER, "null"));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, "null"));
-        user.put(KEY_YEAR, pref.getString(KEY_YEAR, "null"));
-        user.put(KEY_HOURS, pref.getString(KEY_HOURS, "null"));
+        user.put(KEY_DORR, pref.getString(KEY_DORR, "null"));
         return user;
     }
 
-    public void updateHours(String hours) {
+   /* public void updateHours(String hours) {
         editor.putString(KEY_HOURS, hours);
         editor.commit();
-    }
+    } */
 
     public void checkLogin() {
         if(!this.isLoggedIn()) {

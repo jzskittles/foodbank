@@ -5,6 +5,7 @@ package technovations.ajuj.technovations2017;
  */
 
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class WelcomeNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SessionManagement session;
-    private TextView navDrawerStudentName, navDrawerStudentUsername, navDrawerWelcome, hoursStatus;
+    private TextView navDrawerName, navDrawerUsername, navDrawerWelcome;
     private Button profileButton, draftsButton, submitButton, logButton;
 
     @Override
@@ -45,10 +46,14 @@ public class WelcomeNav extends AppCompatActivity
         session.checkLogin();
 
         HashMap<String, String> user = session.getUserDetails();
+        //user, name, orgname, address, phoneNumber, email, dorr
         String username = user.get(SessionManagement.KEY_USERNAME);
         String name = user.get(SessionManagement.KEY_NAME);
+        String orgname = user.get(SessionManagement.KEY_ORGNAME);
+        String address = user.get(SessionManagement.KEY_ADDRESS);
+        int phoneNumber = Integer.parseInt(user.get(SessionManagement.KEY_PHONENUMBER));
         String email = user.get(SessionManagement.KEY_EMAIL);
-        int hours = Integer.parseInt(user.get(SessionManagement.KEY_HOURS));
+        String dorr = user.get(SessionManagement.KEY_DORR);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,25 +67,26 @@ public class WelcomeNav extends AppCompatActivity
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
         navigationView.addHeaderView(header);
 
-        navDrawerStudentName = (TextView) header.findViewById(R.id.navDrawerStudentName);
-        navDrawerStudentUsername = (TextView) header.findViewById(R.id.navDrawerStudentUsername);
+        navDrawerName = (TextView) header.findViewById(R.id.navDrawerName);
+        navDrawerUsername = (TextView) header.findViewById(R.id.navDrawerUsername);
 
 
         navDrawerWelcome = (TextView) findViewById(R.id.navDrawerWelcome);
-        hoursStatus = (TextView) findViewById(R.id.hoursStatus);
 
-        navDrawerStudentName.setText(name); //i   crie
-        navDrawerStudentUsername.setText(username);
-        navDrawerWelcome.setText(Html.fromHtml("Welcome to VTRACC, <b>" + username + "</b>"));
-        hoursStatus.setText(Html.fromHtml("<b>Hours: </b>" + hours));
+        navDrawerName.setText(name); //i   crie
+        navDrawerUsername.setText(username);
+        navDrawerWelcome.setText(Html.fromHtml("Welcome to DeLITE, <b>" + username + "</b>"));
+      //  hoursStatus.setText(Html.fromHtml("<b>Hours: </b>" + hours));
 
-        profileButton = (Button) findViewById(R.id.profileButton);
+        /* profileButton = (Button) findViewById(R.id.profileButton);
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Profile.class));
             }
         });
+
+
         draftsButton = (Button) findViewById(R.id.draftsButton);
         draftsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +107,7 @@ public class WelcomeNav extends AppCompatActivity
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Create.class));
             }
-        });
+        }); */
     }
 
     @Override
@@ -146,12 +152,8 @@ public class WelcomeNav extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
         } else if (id == R.id.nav_profile) {
             startActivity(new Intent(getApplicationContext(), Profile.class));
-        } else if (id == R.id.nav_create) {
-            startActivity(new Intent(getApplicationContext(), Create.class));
-        } else if (id == R.id.nav_drafts) {
-            startActivity(new Intent(getApplicationContext(), Drafts.class));
         } else if (id == R.id.nav_log) {
-            startActivity(new Intent(getApplicationContext(), Log.class));
+            //startActivity(new Intent(getApplicationContext(), Log.class));
         } else if (id == R.id.nav_logout) {
             session.logoutUser();
         }

@@ -58,7 +58,7 @@ public class Login extends AppCompatActivity{
         session = new SessionManagement(getApplication());
 
 
-        URL = "http://ajuj.comlu.com/user_control.php";
+        URL = "https://2017ajuj.000webhostapp.com/login.php";
 
 
         sign_in.setOnClickListener(new View.OnClickListener(){
@@ -76,17 +76,19 @@ public class Login extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                                 String user = jsonObject.getString("user");
                                 String name = jsonObject.getString("name");
+                                String orgname = jsonObject.getString("orgname");
+                                String address = jsonObject.getString("address");
+                                int phoneNumber = jsonObject.getInt("phoneNumber");
                                 String email = jsonObject.getString("email");
-                                int year = jsonObject.getInt("year");
-                                int hours = jsonObject.getInt("hours");
+                                String dorr = jsonObject.getString("dorr");
 
 
-                                session.createLoginSession(user, name, email, year, hours);
-                                if (username.getText().toString().equals("admin") && (password.getText().toString().equals("admin"))) {
+                                session.createLoginSession(user, name, orgname, address, phoneNumber, email, dorr);
+                                /*if (username.getText().toString().equals("admin") && (password.getText().toString().equals("admin"))) {
                                     startActivity(new Intent(getApplicationContext(), AdminNav.class));
-                                } else {
-                                    startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
-                                }
+                                } else {*/
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                //}
 
                             }
                             else
