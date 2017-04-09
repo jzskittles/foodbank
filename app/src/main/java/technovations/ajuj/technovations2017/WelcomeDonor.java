@@ -143,6 +143,8 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                             JSONObject jsonObject = new JSONObject(response);
                             //Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
                             if(jsonObject.has("success")){
+                                statusMessage.setText("");
+                                
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getApplicationContext(),"ERROR: "+jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
