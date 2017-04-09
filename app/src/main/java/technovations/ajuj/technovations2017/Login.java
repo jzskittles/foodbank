@@ -87,8 +87,10 @@ public class Login extends AppCompatActivity{
                                 /*if (username.getText().toString().equals("admin") && (password.getText().toString().equals("admin"))) {
                                     startActivity(new Intent(getApplicationContext(), AdminNav.class));
                                 } else {*/
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                //}
+                                if(dorr.equals("donor"))
+                                    startActivity(new Intent(getApplicationContext(), WelcomeDonor.class));
+                                if(dorr.equals("receiver"))
+                                    startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
 
                             }
                             else

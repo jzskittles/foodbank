@@ -1,6 +1,7 @@
 package technovations.ajuj.technovations2017;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -15,44 +16,71 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import technovations.ajuj.technovations2017.FeedListAdapter;
 //import com.technovations.innova.technovations2.*;
 //import com.technovations.innova.technovations2.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    SessionManagement session;
     TextView profileUsername, profileName, profileEmail, profileNumber, profileAddress, profileOrganization;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
-    private Button checkHours;
     String username;
+    private ListView listView;
+    private FeedListAdapter listAdapter;
+    private List<FeedItem> feedItems;
+    private String URL_FEED = "https://2017ajuj.000webhostapp.com/status.json";
+    private EditText statusMessage;
+    private SessionManagement session;
+    private TextView statusUsername;
+    private RequestQueue requestQueue;
+    private StringRequest request;
+    private CheckBox vegetable, dairy, meat, bread, fats;
+    private ArrayList<String> statustags;
+    private static final String TAG = Profile.class.getSimpleName();
 
-  /*  String URL = "http://ajuj.comlu.com/checkHours.php";
+
+    /*  String URL = "http://ajuj.comlu.com/checkHours.php";
     private RequestQueue requestQueue;
     private StringRequest request; */
-
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -70,6 +98,21 @@ public class Profile extends AppCompatActivity
         profileNumber= (TextView) findViewById(R.id.profileNumber);
         profileAddress= (TextView) findViewById(R.id.profileAddress);
         profileOrganization = (TextView) findViewById(R.id.profileOrganization);
+
+        Cache cache1 = new DiskBasedCache(getCacheDir(),1024 * 1024);
+
+        Network network = new BasicNetwork(new HurlStack());
+
+        requestQueue = new RequestQueue(cache1, network);
+
+        requestQueue.start();
+
+        listView = (ListView) findViewById(R.id.list);
+
+        feedItems = new ArrayList<FeedItem>();
+
+        listAdapter = new FeedListAdapter(this, feedItems);
+        listView.setAdapter(listAdapter);
 
         /**
          * Call this function whenever you want to check user login
@@ -105,6 +148,79 @@ public class Profile extends AppCompatActivity
         profileNumber.setText(Html.fromHtml("<b>Phone Number: </b> " + phoneNumber));
         profileAddress.setText(Html.fromHtml("<b>Address: </b> " + address));
 
+        Cache cache = AppController.getInstance().getRequestQueue().getCache();
+        Cache.Entry entry = cache.get(URL_FEED);
+        if (entry != null) {
+            // fetch the data from cache
+            try {
+                String data = new String(entry.data, "UTF-8");
+                try {
+                    parseJsonFeed(new JSONObject(data));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            // making fresh volley request and getting json
+            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET,
+                    URL_FEED, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    VolleyLog.d(TAG, "Response: " + response.toString());
+                    if (response != null) {
+                        parseJsonFeed(response);
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+                }
+            });
+
+            // Adding request to volley request queue
+            AppController.getInstance().addToRequestQueue(jsonReq);
+        }
+
+    }
+
+    private void parseJsonFeed(JSONObject response) {
+        try {
+            JSONArray feedArray = response.getJSONArray("feed");
+
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject feedObj = (JSONObject) feedArray.get(i);
+
+                FeedItem item = new FeedItem();
+                item.setId(feedObj.getInt("id"));
+                item.setName(feedObj.getString("name"));
+
+                // Image might be null sometimes
+                String image = feedObj.isNull("image") ? null : feedObj
+                        .getString("image");
+                item.setImge(image);
+                item.setStatus(feedObj.getString("status"));
+                item.setProfilePic(feedObj.getString("profilePic"));
+                item.setTimeStamp(feedObj.getString("timeStamp"));
+
+                // url might be null sometimes
+                String feedUrl = feedObj.isNull("url") ? null : feedObj
+                        .getString("url");
+                item.setUrl(feedUrl);
+
+                feedItems.add(item);
+            }
+
+            // notify data changes to list adapater
+            listAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -158,5 +274,17 @@ public class Profile extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static String getCurrentTimeStamp(){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String currentDateTime = dateFormat.format(new Date());
+            return currentDateTime;
+        }catch (Exception e){
+            e.printStackTrace();
+
+            return null;
+        }
     }
 }

@@ -28,16 +28,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -59,10 +53,11 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
-public class WelcomeDonor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class WelcomeDonor extends Activity{
     private static final String TAG = WelcomeDonor.class.getSimpleName();
     private ListView listView;
     private FeedListAdapter listAdapter;
@@ -77,24 +72,11 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
     private CheckBox vegetable, dairy, meat, bread, fats;
     private ArrayList<String> statustags;
 
-
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
-        navigationView.addHeaderView(header);
 
         session = new SessionManagement(getApplicationContext());
         session.checkLogin();
@@ -104,7 +86,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         String username = user.get(SessionManagement.KEY_USERNAME);
         //user, name, orgname, address, phoneNumber, email, dorr
 
-        statusUsername.setText(Html.fromHtml(username+""));
+        statusUsername.setText(Html.fromHtml(username + ""));
         statusMessage = (EditText) findViewById(R.id.status);
         vegetable = (CheckBox) findViewById(R.id.vegetable_status);
         dairy = (CheckBox) findViewById(R.id.dairy_status);
@@ -114,7 +96,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
         statustags = new ArrayList<String>();
 
-        Cache cache1 = new DiskBasedCache(getCacheDir(),1024 * 1024);
+        Cache cache1 = new DiskBasedCache(getCacheDir(), 1024 * 1024);
 
         Network network = new BasicNetwork(new HurlStack());
 
@@ -124,48 +106,56 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
         listView = (ListView) findViewById(R.id.list);
 
+
         feedItems = new ArrayList<FeedItem>();
 
         listAdapter = new FeedListAdapter(this, feedItems);
         listView.setAdapter(listAdapter);
         submit = (Button) findViewById(R.id.submit_status);
-        submit.setOnClickListener(new View.OnClickListener(){
+        submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
 
                 request = new StringRequest(Request.Method.POST, "https://2017ajuj.000webhostapp.com/submitstatus1.php", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
-                        try{
+                        try {
                             Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
-                            if(jsonObject.has("success")){
+                            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                            statusMessage.setText("");
+                            vegetable.setChecked(false);
+                            dairy.setChecked(false);
+                            meat.setChecked(false);
+                            bread.setChecked(false);
+                            fats.setChecked(false);
+
+                            if (jsonObject.has("success")) {
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"ERROR: "+jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "ERROR: " + jsonObject.getString("error"), Toast.LENGTH_SHORT).show();
                             }
-                        }catch(JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener(){
+                }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
 
                     }
 
-                }){
+                }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String,String> hashMap=new HashMap<String,String>();
-                        hashMap.put("user",statusUsername.getText().toString());
-                        hashMap.put("timestamps",getCurrentTimeStamp());
-                        hashMap.put("statustext",statusMessage.getText().toString());
-                        hashMap.put("interests",statustags.toString());
-                        hashMap.put("statuses","pending");
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        hashMap.put("user", statusUsername.getText().toString());
+                        hashMap.put("timestamps", getCurrentTimeStamp());
+                        hashMap.put("statustext", statusMessage.getText().toString());
+                        hashMap.put("interests", statustags.toString());
+                        hashMap.put("statuses", "pending");
                         return hashMap;
                     }
 
@@ -175,12 +165,6 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        // These two lines not needed,
-        // just to get the look of facebook (changing background color & hiding the icon)
-        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
-        getActionBar().setIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-*/
         // We first check for cached request
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
@@ -199,9 +183,8 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
         } else {
             // making fresh volley request and getting json
-            JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET,
+            JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET,
                     URL_FEED, new Response.Listener<JSONObject>() {
-
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.d(TAG, "Response: " + response.toString());
@@ -210,45 +193,52 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                     }
                 }
             }, new Response.ErrorListener() {
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.d(TAG, "Error: " + error.getMessage());
                 }
             });
-
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
-
     }
+        // These two lines not needed,
+        // just to get the look of facebook (changing background color & hiding the icon)
+        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
+        getActionBar().setIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+*/
+        // We first check for cached request
 
-    /**
-     * Parsing json reponse and passing the data to feed view list adapter
-     * */
-    private void parseJsonFeed(JSONObject response) {
-        try {
-            JSONArray feedArray = response.getJSONArray("feed");
+    private void parseJsonFeed(JSONObject response){
+        try{
+        JSONArray feedArray=response.getJSONArray("feed");
 
-            for (int i = 0; i < feedArray.length(); i++) {
-                JSONObject feedObj = (JSONObject) feedArray.get(i);
+        for(int i=0;i<feedArray.length();i++){
+        JSONObject feedObj=(JSONObject)feedArray.get(i);
 
-                FeedItem item = new FeedItem();
-                item.setName(feedObj.getString("username"));
-                item.setId(Integer.parseInt(feedObj.getString("id")));
-                // Image might be null sometimes
-                item.setStatus(feedObj.getString("statustext"));
-                item.setTimeStamp(feedObj.getString("timestamps"));
-                item.setUrl(feedObj.getString("interests"));
-                // url might be null sometimes
+        FeedItem item=new FeedItem();
+        item.setId(feedObj.getInt("id"));
+        item.setName(feedObj.getString("username"));
 
-                feedItems.add(item);
-            }
+        // Image might be null sometimes
+                /*String image = feedObj.isNull("image") ? null : feedObj
+                        .getString("image");
+                item.setImge(image);*/
+        item.setStatus(feedObj.getString("statustext"));
+        //item.setProfilePic(feedObj.getString("profilePic"));
+        item.setTimeStamp(feedObj.getString("timestamps"));
 
-            // notify data changes to list adapater
-            listAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        // url might be null sometimes
+        item.setUrl(feedObj.getString("interests"));
+
+        feedItems.add(item);
+        }
+
+        // notify data changes to list adapater
+        listAdapter.notifyDataSetChanged();
+        }catch(JSONException e){
+        e.printStackTrace();
         }
     }
 
@@ -304,17 +294,4 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             return null;
         }
     }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.nav_profile){
-            startActivity(new Intent(getApplicationContext(), Profile.class));
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-}
