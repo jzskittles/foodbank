@@ -13,20 +13,20 @@ import java.util.HashMap;
  */
 public class FeedItem {
     private int id;
-    private String name, status, image, profilePic, timeStamp, url;
+    private String name, status, image, profilePic, timeStamp, interests;
 
     public FeedItem() {
     }
 
     public FeedItem(int id, String name, String image, String status,
-                    String profilePic, String timeStamp, String url) {
+                    String profilePic, String timeStamp, String interests) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.status = status;
         this.profilePic = profilePic;
         this.timeStamp = timeStamp;
-        this.url = url;
+        this.interests = interests;
 
     }
 
@@ -79,10 +79,10 @@ public class FeedItem {
     }
 
     public String getUrl() {
-        return url;
+        return interests;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String interests) {
+        this.interests = interests;
     }
 }
