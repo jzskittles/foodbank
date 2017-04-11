@@ -176,10 +176,6 @@ public class MainActivity extends Activity{
 
 
     }
-    void refreshItems(){
-        fetchNew();
-        onItemsLoadComplete();
-    }
 
     void onItemsLoadComplete(){
         swipeRefreshLayout.setRefreshing(false);
