@@ -110,7 +110,6 @@ public class Register extends AppCompatActivity {
                         hashMap.put("phoneNumber", phoneNumber.getText().toString());
                         hashMap.put("dorr", DorR);
 
-
                         return hashMap;
                     }
 

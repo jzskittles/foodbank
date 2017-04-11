@@ -41,6 +41,7 @@ public class WelcomeNav extends AppCompatActivity
         setContentView(R.layout.activity_welcome_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         session = new SessionManagement(getApplicationContext());
         session.checkLogin();
@@ -151,7 +152,7 @@ public class WelcomeNav extends AppCompatActivity
         if (id == R.id.nav_home) {
             startActivity(new Intent(getApplicationContext(), WelcomeNav.class));
         } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
         } else if (id == R.id.nav_log) {
             //startActivity(new Intent(getApplicationContext(), Log.class));
         } else if (id == R.id.nav_logout) {

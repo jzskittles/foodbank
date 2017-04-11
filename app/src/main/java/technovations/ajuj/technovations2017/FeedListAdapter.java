@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -31,6 +32,7 @@ public class FeedListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<FeedItem> feedItems;
+    String dorr;
     //ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public FeedListAdapter(Activity activity, List feedItems) {
@@ -60,7 +62,10 @@ public class FeedListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.feed_item, null);
-
+            FeedItem item = feedItems.get(position);
+            String dorrr = item.getDorr();
+            if(dorrr != null && dorrr.equals("receiver"))
+                convertView = inflater.inflate(R.layout.receiver_feed_item, null);
         }
 
         //if (imageLoader == null)

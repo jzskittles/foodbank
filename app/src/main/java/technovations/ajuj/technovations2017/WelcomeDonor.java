@@ -3,13 +3,8 @@ package technovations.ajuj.technovations2017;
 /**
  * Created by jenny on 3/23/2017.
  */
-import technovations.ajuj.technovations2017.*;
-import technovations.ajuj.technovations2017.FeedListAdapter;
-import technovations.ajuj.technovations2017.AppController;
-import technovations.ajuj.technovations2017.FeedItem;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,19 +18,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,6 @@ import com.android.volley.Cache;
 import com.android.volley.Cache.Entry;
 import com.android.volley.Network;
 import com.android.volley.Request;
-import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,11 +51,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
-public class WelcomeDonor extends Activity{
+public class WelcomeDonor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = WelcomeDonor.class.getSimpleName();
     private ListView listView;
     private FeedListAdapter listAdapter;
@@ -71,22 +68,52 @@ public class WelcomeDonor extends Activity{
     private StringRequest request;
     private CheckBox vegetable, dairy, meat, bread, fats;
     private ArrayList<String> statustags;
+    private String receiver;
+    private TextView navDrawerStudentName, navDrawerStudentUsername;
+
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_welcome_donor);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        session = new SessionManagement(getApplicationContext());
+
+
+        statusUsername = (TextView) findViewById(R.id.username_status);
+        HashMap<String, String> user = session.getUserDetails();
+        String sname = user.get(SessionManagement.KEY_NAME);
+        receiver = user.get(SessionManagement.KEY_USERNAME);
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
+        navigationView.addHeaderView(header);
+
+
+        navDrawerStudentName = (TextView) header.findViewById(R.id.navDrawerName);
+        navDrawerStudentUsername = (TextView) header.findViewById(R.id.navDrawerUsername);
+
+        navDrawerStudentName.setText(sname);
+        navDrawerStudentUsername.setText(receiver);
 
         session = new SessionManagement(getApplicationContext());
         session.checkLogin();
 
-        statusUsername = (TextView) findViewById(R.id.username_status);
-        HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManagement.KEY_USERNAME);
+
         //user, name, orgname, address, phoneNumber, email, dorr
 
-        statusUsername.setText(Html.fromHtml(username + ""));
+        statusUsername.setText(Html.fromHtml(receiver + ""));
         statusMessage = (EditText) findViewById(R.id.status);
         vegetable = (CheckBox) findViewById(R.id.vegetable_status);
         dairy = (CheckBox) findViewById(R.id.dairy_status);
@@ -210,33 +237,96 @@ public class WelcomeDonor extends Activity{
 */
         // We first check for cached request
 
+    public void profileRedirect(View v){
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        TextView tv = (TextView)vwParentRow.getChildAt(1);
+        String user = tv.getText().toString();
+
+            Intent i = new Intent(this, ProfileDonor.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("username", user);
+            i.putExtras(bundle);
+
+            startActivity(i);
+
+    }
+
+    public void claimListener(View v){
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        LinearLayout child1 = (LinearLayout)vwParentRow.getChildAt(0);
+        LinearLayout child2 = (LinearLayout)child1.getChildAt(1);
+        TextView tv = (TextView)child2.getChildAt(0);
+        final String uid = tv.getText().toString();
+        Button btnChild = (Button)vwParentRow.getChildAt(4);
+        request = new StringRequest(Request.Method.POST, "https://2017ajuj.000webhostapp.com/claim.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    if (jsonObject.has("successUpdate")) {
+                        Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successUpdate"), Toast.LENGTH_SHORT).show();
+                        listAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ERROR: " + receiver + ", " + uid, Toast.LENGTH_SHORT).show();
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<String, String>();
+                hashMap.put("uid", uid);
+                hashMap.put("receiver", receiver);
+                return hashMap;
+            }
+
+        };
+
+        requestQueue.add(request);
+    }
+
     private void parseJsonFeed(JSONObject response){
         try{
         JSONArray feedArray=response.getJSONArray("feed");
 
-        for(int i=0;i<feedArray.length();i++){
-        JSONObject feedObj=(JSONObject)feedArray.get(i);
+        for(int i=0;i<feedArray.length();i++) {
+            JSONObject feedObj = (JSONObject) feedArray.get(i);
 
-        FeedItem item=new FeedItem();
-        item.setId(feedObj.getInt("id"));
-        item.setName(feedObj.getString("username"));
+            FeedItem item = new FeedItem();
+            if (feedObj.getString("receiver").isEmpty()) {
+                item.setId(feedObj.getInt("id"));
+                item.setName(feedObj.getString("username"));
 
-        // Image might be null sometimes
+                // Image might be null sometimes
                 /*String image = feedObj.isNull("image") ? null : feedObj
                         .getString("image");
                 item.setImge(image);*/
-        item.setStatus(feedObj.getString("statustext"));
-        //item.setProfilePic(feedObj.getString("profilePic"));
-        item.setTimeStamp(feedObj.getString("timestamps"));
+                item.setStatus(feedObj.getString("statustext"));
+                //item.setProfilePic(feedObj.getString("profilePic"));
+                item.setTimeStamp(feedObj.getString("timestamps"));
 
-        // url might be null sometimes
-        item.setUrl(feedObj.getString("interests"));
+                // url might be null sometimes
+                item.setUrl(feedObj.getString("interests"));
 
-        feedItems.add(item);
+                feedItems.add(item);
+
+
+                // notify data changes to list adapater
+                listAdapter.notifyDataSetChanged();
+            }
         }
-
-        // notify data changes to list adapater
-        listAdapter.notifyDataSetChanged();
         }catch(JSONException e){
         e.printStackTrace();
         }
@@ -244,7 +334,48 @@ public class WelcomeDonor extends Activity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.profile, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        if (id == R.id.nav_home_welcome_donor) {
+
+            startActivity(new Intent(getApplicationContext(), WelcomeDonor.class));
+        } else if (id == R.id.nav_profile_welcome_donor) {
+            Intent i = new Intent(this, ProfileDonor.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("username", receiver);
+            i.putExtras(bundle);
+
+            startActivity(i);
+            //startActivity(new Intent(getApplicationContext(), ProfileDonor.class));
+        } else if (id == R.id.nav_logout_welcome_donor) {
+            session.logoutUser();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -294,4 +425,4 @@ public class WelcomeDonor extends Activity{
             return null;
         }
     }
-        }
+}

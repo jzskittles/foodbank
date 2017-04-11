@@ -3,13 +3,7 @@ package technovations.ajuj.technovations2017;
 /**
  * Created by jenny on 3/23/2017.
  */
-import technovations.ajuj.technovations2017.*;
-import technovations.ajuj.technovations2017.FeedListAdapter;
-import technovations.ajuj.technovations2017.AppController;
-import technovations.ajuj.technovations2017.FeedItem;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,13 +18,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -42,10 +32,8 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
-import com.android.volley.Cache.Entry;
 import com.android.volley.Network;
 import com.android.volley.Request;
-import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,7 +41,6 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
@@ -77,7 +64,7 @@ public class MainActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_welcome_donor);
 
         session = new SessionManagement(getApplicationContext());
         session.checkLogin();
@@ -175,10 +162,6 @@ public class MainActivity extends Activity{
         // We first check for cached request
 
 
-    }
-    void refreshItems(){
-        fetchNew();
-        onItemsLoadComplete();
     }
 
     void onItemsLoadComplete(){

@@ -13,12 +13,12 @@ import java.util.HashMap;
  */
 public class FeedItem {
     private int id;
-    private String name, status, image, profilePic, timeStamp, interests,uid;
+    private String name, status, image, profilePic, timeStamp, interests, uid, dorr, receiver;
 
     public FeedItem() {
     }
 
-    public FeedItem(int id, String name, String status, String profilePic, String timeStamp, String interests, String uid) {
+    public FeedItem(int id, String name, String status, String profilePic, String timeStamp, String interests, String uid, String dorr, String receiver) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -26,6 +26,8 @@ public class FeedItem {
         this.timeStamp = timeStamp;
         this.interests = interests;
         this.uid = uid;
+        this.dorr = dorr;
+        this.receiver = receiver;
     }
 
     public int getId() {
@@ -90,6 +92,22 @@ public class FeedItem {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getDorr() {
+        return dorr;
+    }
+
+    public void setDorr(String dorr) {
+        this.dorr = dorr;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
 }
