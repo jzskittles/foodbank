@@ -149,9 +149,9 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                     public void onResponse(String response) {
                         // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
                         try {
-                            Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
                             JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
                             statusMessage.setText("");
                             vegetable.setChecked(false);
                             dairy.setChecked(false);
@@ -263,7 +263,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             public void onResponse(String response) {
                 // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
                 try {
-                    Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
                     JSONObject jsonObject = new JSONObject(response);
 
                     if (jsonObject.has("successUpdate")) {

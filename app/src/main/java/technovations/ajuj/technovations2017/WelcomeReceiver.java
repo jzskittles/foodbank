@@ -197,7 +197,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
             public void onResponse(String response) {
                 // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
                 try {
-                    Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
                     JSONObject jsonObject = new JSONObject(response);
 
                     if (jsonObject.has("successUpdate")) {
@@ -313,13 +313,13 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_home_welcome_receiver) {
-            Toast.makeText(getApplicationContext(),"Welcome Receiver",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Welcome Receiver",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
         } else if (id == R.id.nav_profile_welcome_receiver) {
-            Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
         } else if (id == R.id.nav_logout_welcome_receiver) {
-            Toast.makeText(getApplicationContext(),"logout Receiver",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"logout Receiver",Toast.LENGTH_SHORT).show();
             session.logoutUser();
         }
 

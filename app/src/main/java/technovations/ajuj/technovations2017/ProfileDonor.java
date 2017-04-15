@@ -127,7 +127,7 @@ public class ProfileDonor extends AppCompatActivity
                 try{
                     JSONObject jsonObject = new JSONObject(response);
                     if(jsonObject.has("success")) {
-                        Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                         //username1 = jsonObject.getString("user");
                         /*name = jsonObject.getString("name");
                         orgname = jsonObject.getString("orgname");

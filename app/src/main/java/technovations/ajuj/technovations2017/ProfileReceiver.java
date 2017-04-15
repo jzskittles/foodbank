@@ -266,10 +266,10 @@ public class ProfileReceiver extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_home_profile_receiver) {
-            Toast.makeText(getApplicationContext(),"Welcome Receiver",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Welcome Receiver",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
         } else if (id == R.id.nav_profile_profile_receiver) {
-            Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
         } else if (id == R.id.nav_logout_profile_receiver) {
             session.logoutUser();
