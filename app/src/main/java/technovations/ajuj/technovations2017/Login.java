@@ -19,7 +19,6 @@ import technovations.ajuj.technovations2017.*;
 //import com.technovations.innova.technovations2.AdminNav;
 //import com.technovations.innova.technovations2.Register;
 import technovations.ajuj.technovations2017.SessionManagement;
-//import technovations.ajuj.technovations2017.WelcomeNav;
 
 import org.json.JSONException;
 import org.json.JSONObject;

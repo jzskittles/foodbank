@@ -32,16 +32,6 @@
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <action android:name="android.intent.action.EDIT"/>
-                <action android:name="android.intent.action.GET_CONTENT"/>
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".WelcomeDonor"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar"/>
