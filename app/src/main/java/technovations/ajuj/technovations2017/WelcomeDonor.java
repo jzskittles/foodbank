@@ -18,7 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -54,6 +57,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import static android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION;
+
 public class WelcomeDonor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = WelcomeDonor.class.getSimpleName();
     private ListView listView;
@@ -70,6 +75,15 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
     private ArrayList<String> statustags;
     private String receiver;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
+    IntentFilter intentFilter;
+    private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //---display the SMS received in the TextView---
+            //TextView SMSes = (TextView) findViewById(R.id.textView1);
+            Toast.makeText(getApplicationContext(), intent.getExtras().getString("sms"), Toast.LENGTH_LONG).show();
+        }
+    };
 
 
     @SuppressLint("NewApi")
@@ -109,6 +123,11 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
         session = new SessionManagement(getApplicationContext());
         session.checkLogin();
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("SMS_RECEIVED_ACTION");
+        //---register the receiver---
+        registerReceiver(intentReceiver, intentFilter);
 
 
         //user, name, orgname, address, phoneNumber, email, dorr
@@ -229,35 +248,35 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
     }
-        // These two lines not needed,
-        // just to get the look of facebook (changing background color & hiding the icon)
+    // These two lines not needed,
+    // just to get the look of facebook (changing background color & hiding the icon)
         /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
         getActionBar().setIcon(
                 new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 */
-        // We first check for cached request
+    // We first check for cached request
 
-    public void profileRedirect(View v){
-        LinearLayout vwParentRow = (LinearLayout)v.getParent();
-        TextView tv = (TextView)vwParentRow.getChildAt(1);
+    public void profileRedirect(View v) {
+        LinearLayout vwParentRow = (LinearLayout) v.getParent();
+        TextView tv = (TextView) vwParentRow.getChildAt(1);
         String user = tv.getText().toString();
 
-            Intent i = new Intent(this, ProfileDonor.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("username", user);
-            i.putExtras(bundle);
+        Intent i = new Intent(this, ProfileDonor.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", user);
+        i.putExtras(bundle);
 
-            startActivity(i);
+        startActivity(i);
 
     }
 
-    public void claimListener(View v){
-        LinearLayout vwParentRow = (LinearLayout)v.getParent();
-        LinearLayout child1 = (LinearLayout)vwParentRow.getChildAt(0);
-        LinearLayout child2 = (LinearLayout)child1.getChildAt(1);
-        TextView tv = (TextView)child2.getChildAt(0);
+    public void claimListener(View v) {
+        LinearLayout vwParentRow = (LinearLayout) v.getParent();
+        LinearLayout child1 = (LinearLayout) vwParentRow.getChildAt(0);
+        LinearLayout child2 = (LinearLayout) child1.getChildAt(1);
+        TextView tv = (TextView) child2.getChildAt(0);
         final String uid = tv.getText().toString();
-        Button btnChild = (Button)vwParentRow.getChildAt(4);
+        Button btnChild = (Button) vwParentRow.getChildAt(4);
         request = new StringRequest(Request.Method.POST, "https://2017ajuj.000webhostapp.com/claim.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -297,38 +316,38 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         requestQueue.add(request);
     }
 
-    private void parseJsonFeed(JSONObject response){
-        try{
-        JSONArray feedArray=response.getJSONArray("feed");
+    private void parseJsonFeed(JSONObject response) {
+        try {
+            JSONArray feedArray = response.getJSONArray("feed");
 
-        for(int i=0;i<feedArray.length();i++) {
-            JSONObject feedObj = (JSONObject) feedArray.get(i);
+            for (int i = 0; i < feedArray.length(); i++) {
+                JSONObject feedObj = (JSONObject) feedArray.get(i);
 
-            FeedItem item = new FeedItem();
-            if (feedObj.getString("receiver").isEmpty()) {
-                item.setId(feedObj.getInt("id"));
-                item.setName(feedObj.getString("username"));
+                FeedItem item = new FeedItem();
+                if (feedObj.getString("receiver").isEmpty()) {
+                    item.setId(feedObj.getInt("id"));
+                    item.setName(feedObj.getString("username"));
 
-                // Image might be null sometimes
+                    // Image might be null sometimes
                 /*String image = feedObj.isNull("image") ? null : feedObj
                         .getString("image");
                 item.setImge(image);*/
-                item.setStatus(feedObj.getString("statustext"));
-                //item.setProfilePic(feedObj.getString("profilePic"));
-                item.setTimeStamp(feedObj.getString("timestamps"));
+                    item.setStatus(feedObj.getString("statustext"));
+                    //item.setProfilePic(feedObj.getString("profilePic"));
+                    item.setTimeStamp(feedObj.getString("timestamps"));
 
-                // url might be null sometimes
-                item.setUrl(feedObj.getString("interests"));
+                    // url might be null sometimes
+                    item.setUrl(feedObj.getString("interests"));
 
-                feedItems.add(item);
+                    feedItems.add(item);
 
 
-                // notify data changes to list adapater
-                listAdapter.notifyDataSetChanged();
+                    // notify data changes to list adapater
+                    listAdapter.notifyDataSetChanged();
+                }
             }
-        }
-        }catch(JSONException e){
-        e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -379,50 +398,75 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void selectItem(View view){
+    public void selectItem(View view) {
         boolean checked = ((CheckBox) view).isChecked();
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.vegetable_status:
-                if(checked){
-                    statustags.add("Vegetables");}
-                else{
-                    statustags.remove("Vegetables");}
+                if (checked) {
+                    statustags.add("Vegetables");
+                } else {
+                    statustags.remove("Vegetables");
+                }
                 break;
             case R.id.dairy_status:
-                if(checked){
-                    statustags.add("Milk, Yogurt, Cheese");}
-                else{
-                    statustags.remove("Milk, Yogurt, Cheese");}
+                if (checked) {
+                    statustags.add("Milk, Yogurt, Cheese");
+                } else {
+                    statustags.remove("Milk, Yogurt, Cheese");
+                }
                 break;
             case R.id.meat_status:
-                if(checked){
-                    statustags.add("Meat, Poultry, Fish, Beans, Eggs, Nuts");}
-                else{
-                    statustags.remove("Meat, Poultry, Fish, Beans, Eggs, Nuts");}
+                if (checked) {
+                    statustags.add("Meat, Poultry, Fish, Beans, Eggs, Nuts");
+                } else {
+                    statustags.remove("Meat, Poultry, Fish, Beans, Eggs, Nuts");
+                }
                 break;
             case R.id.bread_status:
-                if(checked){
-                    statustags.add("Bread, Cereal, Rice, Pasta");}
-                else{
-                    statustags.remove("Bread, Cereal, Rice, Pasta");}
+                if (checked) {
+                    statustags.add("Bread, Cereal, Rice, Pasta");
+                } else {
+                    statustags.remove("Bread, Cereal, Rice, Pasta");
+                }
                 break;
             case R.id.fats_status:
-                if(checked){
-                    statustags.add("Fats, Oil, Sweets");}
-                else{
-                    statustags.remove("Fats, Oil, Sweets");}
+                if (checked) {
+                    statustags.add("Fats, Oil, Sweets");
+                } else {
+                    statustags.remove("Fats, Oil, Sweets");
+                }
                 break;
         }
     }
-    public static String getCurrentTimeStamp(){
-        try{
+
+    public static String getCurrentTimeStamp() {
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String currentDateTime = dateFormat.format(new Date());
             return currentDateTime;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        //---register the receiver---
+        registerReceiver(intentReceiver, intentFilter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        //---unregister the receiver---
+        unregisterReceiver(intentReceiver);
+        super.onPause();
+    }
+
+    //---sends an SMS message to another device---
+    private void sendSMS(String phoneNumber, String message) {
+
     }
 }

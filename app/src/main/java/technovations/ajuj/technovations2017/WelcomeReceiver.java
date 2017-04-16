@@ -17,15 +17,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,7 +74,17 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
     private String dorr, receiver;
     private ArrayList<String> uids;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
-
+    String phoneNo, sms;
+    String uniqueID;
+    /*IntentFilter intentFilter;
+    private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //---display the SMS received in the TextView---
+            //TextView SMSes = (TextView) findViewById(R.id.textView1);
+            Toast.makeText(getApplicationContext(), intent.getExtras().getString("sms"), Toast.LENGTH_LONG).show();
+        }
+    };*/
 
 
     @SuppressLint("NewApi")
@@ -105,6 +123,15 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
         navDrawerStudentName.setText(name);
         navDrawerStudentUsername.setText(receiver);
+
+        //SmsManager smsManager = SmsManager.getDefault();
+        //smsManager.sendTextMessage("phoneNo", null, "sms message", null, null);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
+
+        /*intentFilter = new IntentFilter();
+        intentFilter.addAction("SMS_RECEIVED_ACTION");
+        //---register the receiver---
+        registerReceiver(intentReceiver, intentFilter);*/
 
 
 
@@ -235,6 +262,106 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
         requestQueue.add(request);
         listAdapter.notifyDataSetChanged();
+
+        request = new StringRequest(Request.Method.POST, "https://2017ajuj.000webhostapp.com/textMessage.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.has("success")) {
+                        Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
+                        String user = jsonObject.getString("user");
+                        String interests = jsonObject.getString("interests");
+                        String receiver = jsonObject.getString("receiver");
+                        phoneNo = jsonObject.getString("phoneNumber");
+
+                        sms = "Message to " + user + " with phoneNumber " + phoneNo + ": " + receiver + " has claimed your " + interests;
+
+                        try {
+                            String SMS_SENT = "SMS_SENT";
+                            String SMS_DELIVERED = "SMS_DELIVERED";
+
+                            PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SMS_SENT), 0);
+                            PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SMS_DELIVERED), 0);
+
+// For when the SMS has been sent
+                            registerReceiver(new BroadcastReceiver() {
+                                @Override
+                                public void onReceive(Context context, Intent intent) {
+                                    switch (getResultCode()) {
+                                        case Activity.RESULT_OK:
+                                            Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                            Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                            Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                                            Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                            Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            }, new IntentFilter(SMS_SENT));
+
+// For when the SMS has been delivered
+                            registerReceiver(new BroadcastReceiver() {
+                                @Override
+                                public void onReceive(Context context, Intent intent) {
+                                    switch (getResultCode()) {
+                                        case Activity.RESULT_OK:
+                                            Toast.makeText(getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case Activity.RESULT_CANCELED:
+                                            Toast.makeText(getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            }, new IntentFilter(SMS_DELIVERED));
+
+// Get the default instance of SmsManager
+                            SmsManager smsManager = SmsManager.getDefault();
+// Send a text based SMS
+                            smsManager.sendTextMessage(phoneNo, null, sms, sentPendingIntent, deliveredPendingIntent);
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(),
+                                    "SMS failed, please try again later!",
+                                    Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+
+
+
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(),"ERROR: "+jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                }catch(JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+
+            }
+
+        }){
+            @Override
+            protected java.util.Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> hashMap=new HashMap<String,String>();
+                hashMap.put("uniqueid", uid);
+
+                return hashMap;
+            }
+
+        };
+
+        requestQueue.add(request);
     }
 
 
@@ -377,4 +504,23 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
             return null;
         }
     }
+
+    /*@Override
+    protected void onResume() {
+        //---register the receiver---
+        registerReceiver(intentReceiver, intentFilter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        //---unregister the receiver---
+        unregisterReceiver(intentReceiver);
+        super.onPause();
+    }
+
+    //---sends an SMS message to another device---
+    private void sendSMS(String phoneNumber, String message) {
+
+    }*/
 }
