@@ -177,9 +177,12 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                             meat.setChecked(false);
                             bread.setChecked(false);
                             fats.setChecked(false);
+                            statustags.clear();
 
                             if (jsonObject.has("success")) {
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
+                                feedItems.clear();
+                                getFeed();
                             } else {
                                 Toast.makeText(getApplicationContext(), "ERROR: " + jsonObject.getString("error"), Toast.LENGTH_SHORT).show();
                             }
@@ -211,7 +214,19 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        getFeed();
+
         // We first check for cached request
+    }
+    // These two lines not needed,
+    // just to get the look of facebook (changing background color & hiding the icon)
+        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
+        getActionBar().setIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+*/
+    // We first check for cached request
+
+    public void getFeed(){
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
         if (entry != null) {
@@ -248,13 +263,6 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
     }
-    // These two lines not needed,
-    // just to get the look of facebook (changing background color & hiding the icon)
-        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
-        getActionBar().setIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-*/
-    // We first check for cached request
 
     public void profileRedirect(View v) {
         LinearLayout vwParentRow = (LinearLayout) v.getParent();
@@ -379,7 +387,6 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_home_welcome_donor) {
-
             startActivity(new Intent(getApplicationContext(), WelcomeDonor.class));
         } else if (id == R.id.nav_profile_welcome_donor) {
             Intent i = new Intent(this, ProfileDonor.class);

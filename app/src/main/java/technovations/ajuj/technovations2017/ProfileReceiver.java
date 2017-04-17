@@ -159,7 +159,7 @@ public class ProfileReceiver extends AppCompatActivity
                 @Override
                 public void onResponse(JSONObject response) {
                     VolleyLog.d(TAG, "Response: " + response.toString());
-                    Toast.makeText(getApplicationContext(),response+"",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),response+"",Toast.LENGTH_LONG).show();
                     if (response != null) {
                         parseJsonFeed(response);
                     }

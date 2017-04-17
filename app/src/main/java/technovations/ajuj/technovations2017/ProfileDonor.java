@@ -339,8 +339,10 @@ public class ProfileDonor extends AppCompatActivity
                             .getString("url");
                     item.setUrl(feedUrl);
                     item.setReceiver(feedObj.getString("receiver"));
+                    item.setUrl(feedObj.getString("interests"));
                     receivers = feedObj.getString("receiver");
                     if (feedObj.getString("receiver").equals("")) {
+                        item.setDorr("receiver");
                         currentItems.add(item);
                         currentAdapter.notifyDataSetChanged();
                     } else {

@@ -155,6 +155,18 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         listView.setAdapter(listAdapter);
 
         // We first check for cached request
+        getFeed();
+
+    }
+    // These two lines not needed,
+    // just to get the look of facebook (changing background color & hiding the icon)
+        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
+        getActionBar().setIcon(
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+*/
+    // We first check for cached request
+
+    public void getFeed(){
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
         if (entry != null) {
@@ -191,13 +203,6 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
     }
-    // These two lines not needed,
-    // just to get the look of facebook (changing background color & hiding the icon)
-        /*getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
-        getActionBar().setIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-*/
-    // We first check for cached request
 
     public void profileRedirect(View v){
         LinearLayout vwParentRow = (LinearLayout)v.getParent();
@@ -228,6 +233,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     JSONObject jsonObject = new JSONObject(response);
 
                     if (jsonObject.has("successUpdate")) {
+                        feedItems.clear();
+                        getFeed();
                         Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successUpdate"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successInsert"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successDelete"), Toast.LENGTH_SHORT).show();
