@@ -282,10 +282,17 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
     }
 
     public void statusSort(View v){
-        String category = v.getTag().toString();
-        //Toast.makeText(getApplicationContext(), "TYPE: "+category, Toast.LENGTH_SHORT).show();
-        feedItems.clear();
-        getFeed(category);
+        LinearLayout vw = (LinearLayout)v.getParent();
+        Button vegetable = (Button)vw.getChildAt(0);
+        vegetable.setOnClickListener(null);
+        Button dairy = (Button)vw.getChildAt(0);
+        dairy.setOnClickListener(null);
+        Button meat = (Button)vw.getChildAt(0);
+        meat.setOnClickListener(null);
+        Button bread = (Button)vw.getChildAt(0);
+        bread.setOnClickListener(null);
+        Button fats = (Button)vw.getChildAt(0);
+        fats.setOnClickListener(null);
     }
 
     public void profileRedirect(View v) {
@@ -379,8 +386,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                 }else{
                     item.setFats(false);
                 }
-                String[] interest = item.getInterests();
-                if (feedObj.getString("receiver").isEmpty()&&(type.equals("all")|| Arrays.asList(interest).contains(type))) {
+                if (feedObj.getString("receiver").isEmpty()) {
                     item.setId(feedObj.getInt("id"));
                     item.setName(feedObj.getString("username"));
 

@@ -200,6 +200,19 @@ public class ProfileReceiver extends AppCompatActivity
         fats.setOnClickListener(null);
     }
 
+    public void profileRedirect(View v){
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        TextView tv = (TextView)vwParentRow.getChildAt(1);
+        String user = tv.getText().toString();
+
+        Intent i = new Intent(this, ProfileDonor.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", user);
+        i.putExtras(bundle);
+
+        startActivity(i);
+    }
+
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("feed");
