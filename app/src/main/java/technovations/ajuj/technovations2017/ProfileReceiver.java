@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,7 @@ public class ProfileReceiver extends AppCompatActivity
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
     private String URL_FEED = "https://2017ajuj.000webhostapp.com/status.json";
+    private Button vegetables, dairy, meat, bread, fats;
 
 
   /*  String URL = "http://ajuj.comlu.com/checkHours.php";
@@ -126,6 +128,12 @@ public class ProfileReceiver extends AppCompatActivity
         profileNumber.setText(Html.fromHtml("<b>Phone Number: </b> " + phoneNumber));
         profileAddress.setText(Html.fromHtml("<b>Address: </b> " + address));
 
+        vegetables = (Button)findViewById(R.id.vegetable_button);
+        dairy = (Button)findViewById(R.id.dairy_button);
+        meat = (Button)findViewById(R.id.meat_button);
+        bread = (Button)findViewById(R.id.bread_button);
+        fats = (Button)findViewById(R.id.fats_button);
+
         listView = (ListView) findViewById(R.id.list_claim);
 
         feedItems = new ArrayList<FeedItem>();
@@ -177,6 +185,20 @@ public class ProfileReceiver extends AppCompatActivity
         }
 
     }
+    public void statusSort(View v){
+        //Toast.makeText(getApplicationContext(), "You don't have this function", Toast.LENGTH_SHORT).show();
+        LinearLayout vw = (LinearLayout)v.getParent();
+        Button vegetable = (Button)vw.getChildAt(0);
+        vegetable.setOnClickListener(null);
+        Button dairy = (Button)vw.getChildAt(0);
+        dairy.setOnClickListener(null);
+        Button meat = (Button)vw.getChildAt(0);
+        meat.setOnClickListener(null);
+        Button bread = (Button)vw.getChildAt(0);
+        bread.setOnClickListener(null);
+        Button fats = (Button)vw.getChildAt(0);
+        fats.setOnClickListener(null);
+    }
 
     private void parseJsonFeed(JSONObject response) {
         try {
@@ -206,13 +228,36 @@ public class ProfileReceiver extends AppCompatActivity
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
-                    item.setUrl(feedObj.getString("interests"));
+                    //item.setUrl(feedObj.getString("interests"));
                     item.setUid(feedObj.getString("uid"));
 
                     // url might be null sometimes
                     String feedUrl = feedObj.isNull("url") ? null : feedObj
                             .getString("url");
-                    item.setUrl(feedUrl);
+                    //item.setUrl(feedUrl);
+                    String interests = feedObj.getString("interests");
+                    String[] strings = interests.replace("[", "").replace("]", "").split(", ");
+                    if(strings[0].equals("true")){
+                        item.setVegetables(true);
+                    }else{
+                        item.setVegetables(false);
+                    }if(strings[1].equals("true")){
+                        item.setDairy(true);
+                    }else{
+                        item.setDairy(false);
+                    }if(strings[2].equals("true")){
+                        item.setMeat(true);
+                    }else{
+                        item.setMeat(false);
+                    }if(strings[3].equals("true")){
+                        item.setBread(true);
+                    }else{
+                        item.setBread(false);
+                    }if(strings[4].equals("true")){
+                        item.setFats(true);
+                    }else{
+                        item.setFats(false);
+                    }
                     receivers = feedObj.getString("receiver");
                         feedItems.add(item);
                         listAdapter.notifyDataSetChanged();

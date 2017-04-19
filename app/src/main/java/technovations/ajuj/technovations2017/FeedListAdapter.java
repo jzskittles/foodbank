@@ -76,7 +76,13 @@ public class FeedListAdapter extends BaseAdapter {
                 .findViewById(R.id.timestamp);
         TextView statusMsg = (TextView) convertView
                 .findViewById(R.id.txtStatusMsg);
-        TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
+        //TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
+        Button vegetables = (Button)convertView.findViewById(R.id.vegetable_button);
+        Button dairy = (Button)convertView.findViewById(R.id.dairy_button);
+        Button meat = (Button)convertView.findViewById(R.id.meat_button);
+        Button bread = (Button)convertView.findViewById(R.id.bread_button);
+        Button fats = (Button)convertView.findViewById(R.id.fats_button);
+
         TextView uid = (TextView) convertView.findViewById(R.id.number);
         //NetworkImageView profilePic = (NetworkImageView) convertView
         //        .findViewById(R.id.profilePic);
@@ -102,7 +108,27 @@ public class FeedListAdapter extends BaseAdapter {
         }
 
         // Checking for null feed url
-        url.setText(item.getUrl());
+        //url.setText(item.getUrl());
+        if(item.getVegetables())
+            vegetables.setVisibility(View.VISIBLE);
+        else
+            vegetables.setVisibility(View.GONE);
+        if(item.getDairy())
+            dairy.setVisibility(View.VISIBLE);
+        else
+            dairy.setVisibility(View.GONE);
+        if(item.getMeat())
+            meat.setVisibility(View.VISIBLE);
+        else
+            meat.setVisibility(View.GONE);
+        if(item.getBread())
+            bread.setVisibility(View.VISIBLE);
+        else
+            bread.setVisibility(View.GONE);
+        if(item.getFats())
+            fats.setVisibility(View.VISIBLE);
+        else
+            fats.setVisibility(View.GONE);
 
         // user profile pic
         //profilePic.setImageUrl(item.getProfilePic(), imageLoader);

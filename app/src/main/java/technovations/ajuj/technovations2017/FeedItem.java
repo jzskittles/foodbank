@@ -13,18 +13,23 @@ import java.util.HashMap;
  */
 public class FeedItem {
     private int id;
-    private String name, status, image, profilePic, timeStamp, interests, uid, dorr, receiver;
+    private String name, status, image, profilePic, timeStamp, uid, dorr, receiver;
+    private boolean vegetables, dairy, meat, bread, fats;
 
     public FeedItem() {
     }
 
-    public FeedItem(int id, String name, String status, String profilePic, String timeStamp, String interests, String uid, String dorr, String receiver) {
+    public FeedItem(int id, String name, String status, String profilePic, String timeStamp, boolean vegetables, boolean dairy, boolean meat, boolean bread, boolean fats, String uid, String dorr, String receiver) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.profilePic = profilePic;
         this.timeStamp = timeStamp;
-        this.interests = interests;
+        this.vegetables = vegetables;
+        this.dairy = dairy;
+        this.meat = meat;
+        this.bread = bread;
+        this.fats = fats;
         this.uid = uid;
         this.dorr = dorr;
         this.receiver = receiver;
@@ -78,12 +83,44 @@ public class FeedItem {
         this.timeStamp = timeStamp;
     }
 
-    public String getUrl() {
-        return interests;
+    public boolean getVegetables() {
+        return vegetables;
     }
 
-    public void setUrl(String interests) {
-        this.interests = interests;
+    public void setVegetables(boolean vegetables) {
+        this.vegetables = vegetables;
+    }
+
+    public boolean getDairy() {
+        return dairy;
+    }
+
+    public void setDairy(boolean dairy) {
+        this.dairy = dairy;
+    }
+
+    public boolean getMeat() {
+        return meat;
+    }
+
+    public void setMeat(boolean meat) {
+        this.meat = meat;
+    }
+
+    public boolean getBread() {
+        return bread;
+    }
+
+    public void setBread(boolean bread) {
+        this.bread = bread;
+    }
+
+    public boolean getFats() {
+        return fats;
+    }
+
+    public void setFats(boolean fats) {
+        this.fats = fats;
     }
 
     public String getUid() {
@@ -108,6 +145,21 @@ public class FeedItem {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String[] getInterests(){
+        String[] interests = new String[5];
+        if(getVegetables())
+            interests[0]="vegetable";
+        if(getDairy())
+            interests[1]="dairy";
+        if(getMeat())
+            interests[2]="meat";
+        if(getBread())
+            interests[3]="bread";
+        if(getFats())
+            interests[4]="fats";
+        return interests;
     }
 
 }

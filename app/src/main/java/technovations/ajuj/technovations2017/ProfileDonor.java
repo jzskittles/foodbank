@@ -15,14 +15,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -76,6 +79,7 @@ public class ProfileDonor extends AppCompatActivity
     String username1, name, orgname, address, email, dorr;
     int phoneNumber;
     private TabHost tabhost;
+    private Button vegetables_button, dairy_button, meat_button, bread_button, fats_button;
 
     private ListView tab1, tab2;
 
@@ -267,6 +271,7 @@ public class ProfileDonor extends AppCompatActivity
 
 
 
+
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Cache.Entry entry = cache.get(URL_FEED);
         if (entry != null) {
@@ -308,6 +313,21 @@ public class ProfileDonor extends AppCompatActivity
 
     }
 
+    public void statusSort(View v){
+        LinearLayout vw = (LinearLayout)v.getParent();
+        Button vegetable = (Button)vw.getChildAt(0);
+        vegetable.setOnClickListener(null);
+        Button dairy = (Button)vw.getChildAt(0);
+        dairy.setOnClickListener(null);
+        Button meat = (Button)vw.getChildAt(0);
+        meat.setOnClickListener(null);
+        Button bread = (Button)vw.getChildAt(0);
+        bread.setOnClickListener(null);
+        Button fats = (Button)vw.getChildAt(0);
+        fats.setOnClickListener(null);
+        //String category = v.getTag().toString();
+    }
+
     private void parseJsonFeed(JSONObject response, String user) {
         try {
             JSONArray feedArray = response.getJSONArray("feed");
@@ -331,15 +351,39 @@ public class ProfileDonor extends AppCompatActivity
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
-                    item.setUrl(feedObj.getString("interests"));
+                    //item.setUrl(feedObj.getString("interests"));
                     item.setUid(feedObj.getString("uid"));
 
                     // url might be null sometimes
-                    String feedUrl = feedObj.isNull("url") ? null : feedObj
-                            .getString("url");
-                    item.setUrl(feedUrl);
+                    //String feedUrl = feedObj.isNull("url") ? null : feedObj
+                    //        .getString("url");
+                    //item.setUrl(feedUrl);
                     item.setReceiver(feedObj.getString("receiver"));
-                    item.setUrl(feedObj.getString("interests"));
+                    //item.setUrl(feedObj.getString("interests"));
+
+                    String interests = feedObj.getString("interests");
+                    String[] strings = interests.replace("[", "").replace("]", "").split(", ");
+                    if(strings[0].equals("true")){
+                        item.setVegetables(true);
+                    }else{
+                        item.setVegetables(false);
+                    }if(strings[1].equals("true")){
+                        item.setDairy(true);
+                    }else{
+                        item.setDairy(false);
+                    }if(strings[2].equals("true")){
+                        item.setMeat(true);
+                    }else{
+                        item.setMeat(false);
+                    }if(strings[3].equals("true")){
+                        item.setBread(true);
+                    }else{
+                        item.setBread(false);
+                    }if(strings[4].equals("true")){
+                        item.setFats(true);
+                    }else{
+                        item.setFats(false);
+                    }
                     receivers = feedObj.getString("receiver");
                     if (feedObj.getString("receiver").equals("")) {
                         item.setDorr("receiver");

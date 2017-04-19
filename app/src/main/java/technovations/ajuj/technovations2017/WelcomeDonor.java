@@ -7,6 +7,7 @@ package technovations.ajuj.technovations2017;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,8 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
     private String receiver;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
     IntentFilter intentFilter;
+    private Button vegetables_button, dairy_button, meat_button, bread_button, fats_button;
+
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -141,6 +144,19 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         fats = (CheckBox) findViewById(R.id.fats_status);
 
         statustags = new ArrayList<String>();
+        statustags.add(0,"false");
+        statustags.add(1,"false");
+        statustags.add(2,"false");
+        statustags.add(3,"false");
+        statustags.add(4,"false");
+
+        vegetables_button = (Button)findViewById(R.id.vegetable_button);
+        dairy_button = (Button)findViewById(R.id.dairy_button);
+        meat_button = (Button)findViewById(R.id.meat_button);
+        bread_button = (Button)findViewById(R.id.bread_button);
+        fats_button = (Button)findViewById(R.id.fats_button);
+
+
 
         Cache cache1 = new DiskBasedCache(getCacheDir(), 1024 * 1024);
 
@@ -182,7 +198,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                             if (jsonObject.has("success")) {
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                                 feedItems.clear();
-                                getFeed();
+                                getFeed("all");
                             } else {
                                 Toast.makeText(getApplicationContext(), "ERROR: " + jsonObject.getString("error"), Toast.LENGTH_SHORT).show();
                             }
@@ -214,7 +230,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        getFeed();
+        getFeed("all");
 
         // We first check for cached request
     }
@@ -226,15 +242,16 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 */
     // We first check for cached request
 
-    public void getFeed(){
+    public void getFeed(String category){
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
+        final String type = category;
         if (entry != null) {
             // fetch the data from cache
             try {
                 String data = new String(entry.data, "UTF-8");
                 try {
-                    parseJsonFeed(new JSONObject(data));
+                    parseJsonFeed(new JSONObject(data), type);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -250,7 +267,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                 public void onResponse(JSONObject response) {
                     VolleyLog.d(TAG, "Response: " + response.toString());
                     if (response != null) {
-                        parseJsonFeed(response);
+                        parseJsonFeed(response,type);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -262,6 +279,13 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
             // Adding request to volley request queue
             AppController.getInstance().addToRequestQueue(jsonReq);
         }
+    }
+
+    public void statusSort(View v){
+        String category = v.getTag().toString();
+        //Toast.makeText(getApplicationContext(), "TYPE: "+category, Toast.LENGTH_SHORT).show();
+        feedItems.clear();
+        getFeed(category);
     }
 
     public void profileRedirect(View v) {
@@ -324,7 +348,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         requestQueue.add(request);
     }
 
-    private void parseJsonFeed(JSONObject response) {
+    private void parseJsonFeed(JSONObject response, String type) {
         try {
             JSONArray feedArray = response.getJSONArray("feed");
 
@@ -332,7 +356,31 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
 
                 FeedItem item = new FeedItem();
-                if (feedObj.getString("receiver").isEmpty()) {
+                String interests = feedObj.getString("interests");
+                String[] strings = interests.replace("[", "").replace("]", "").split(", ");
+                if(strings[0].equals("true")){
+                    item.setVegetables(true);
+                }else{
+                    item.setVegetables(false);
+                }if(strings[1].equals("true")){
+                    item.setDairy(true);
+                }else{
+                    item.setDairy(false);
+                }if(strings[2].equals("true")){
+                    item.setMeat(true);
+                }else{
+                    item.setMeat(false);
+                }if(strings[3].equals("true")){
+                    item.setBread(true);
+                }else{
+                    item.setBread(false);
+                }if(strings[4].equals("true")){
+                    item.setFats(true);
+                }else{
+                    item.setFats(false);
+                }
+                String[] interest = item.getInterests();
+                if (feedObj.getString("receiver").isEmpty()&&(type.equals("all")|| Arrays.asList(interest).contains(type))) {
                     item.setId(feedObj.getInt("id"));
                     item.setName(feedObj.getString("username"));
 
@@ -345,7 +393,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
-                    item.setUrl(feedObj.getString("interests"));
+                    //item.setUrl(feedObj.getString("interests"));
 
                     feedItems.add(item);
 
@@ -410,37 +458,37 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         switch (view.getId()) {
             case R.id.vegetable_status:
                 if (checked) {
-                    statustags.add("Vegetables");
+                    statustags.set(0, "true");
                 } else {
-                    statustags.remove("Vegetables");
+                    statustags.set(0, "false");
                 }
                 break;
             case R.id.dairy_status:
                 if (checked) {
-                    statustags.add("Milk, Yogurt, Cheese");
+                    statustags.set(1, "true");
                 } else {
-                    statustags.remove("Milk, Yogurt, Cheese");
+                    statustags.set(1, "false");
                 }
                 break;
             case R.id.meat_status:
                 if (checked) {
-                    statustags.add("Meat, Poultry, Fish, Beans, Eggs, Nuts");
+                    statustags.set(2, "true");
                 } else {
-                    statustags.remove("Meat, Poultry, Fish, Beans, Eggs, Nuts");
+                    statustags.set(2, "false");
                 }
                 break;
             case R.id.bread_status:
                 if (checked) {
-                    statustags.add("Bread, Cereal, Rice, Pasta");
+                    statustags.set(3, "true");
                 } else {
-                    statustags.remove("Bread, Cereal, Rice, Pasta");
+                    statustags.set(3, "false");
                 }
                 break;
             case R.id.fats_status:
                 if (checked) {
-                    statustags.add("Fats, Oil, Sweets");
+                    statustags.set(4, "true");
                 } else {
-                    statustags.remove("Fats, Oil, Sweets");
+                    statustags.set(4, "false");
                 }
                 break;
         }

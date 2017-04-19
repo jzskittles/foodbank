@@ -7,6 +7,7 @@ package technovations.ajuj.technovations2017;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
     private ArrayList<String> uids;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
     String phoneNo, sms;
-    String uniqueID;
+    private Button vegetables, dairy, meat, bread, fats;
+
     /*IntentFilter intentFilter;
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
         @Override
@@ -128,6 +130,12 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         //smsManager.sendTextMessage("phoneNo", null, "sms message", null, null);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
+        vegetables = (Button)findViewById(R.id.vegetable_button);
+        dairy = (Button)findViewById(R.id.dairy_button);
+        meat = (Button)findViewById(R.id.meat_button);
+        bread = (Button)findViewById(R.id.bread_button);
+        fats = (Button)findViewById(R.id.fats_button);
+
         /*intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
         //---register the receiver---
@@ -155,7 +163,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         listView.setAdapter(listAdapter);
 
         // We first check for cached request
-        getFeed();
+        getFeed("all");
 
     }
     // These two lines not needed,
@@ -166,15 +174,26 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 */
     // We first check for cached request
 
-    public void getFeed(){
+
+
+    public void statusSort(View v){
+        String category = v.getTag().toString();
+        //Toast.makeText(getApplicationContext(), "TYPE: "+category, Toast.LENGTH_SHORT).show();
+        feedItems.clear();
+        getFeed(category);
+    }
+
+    public void getFeed(String category){
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
         Entry entry = cache.get(URL_FEED);
+        final String type = category;
+        //Toast.makeText(getApplicationContext(), "hm "+type, Toast.LENGTH_SHORT).show();
         if (entry != null) {
             // fetch the data from cache
             try {
                 String data = new String(entry.data, "UTF-8");
                 try {
-                    parseJsonFeed(new JSONObject(data));
+                    parseJsonFeed(new JSONObject(data), type);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -190,7 +209,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                 public void onResponse(JSONObject response) {
                     VolleyLog.d(TAG, "Response: " + response.toString());
                     if (response != null) {
-                        parseJsonFeed(response);
+                        parseJsonFeed(response, type);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -234,7 +253,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
                     if (jsonObject.has("successUpdate")) {
                         feedItems.clear();
-                        getFeed();
+                        getFeed("all");
                         Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successUpdate"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successInsert"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successDelete"), Toast.LENGTH_SHORT).show();
@@ -372,7 +391,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
     }
 
 
-    private void parseJsonFeed(JSONObject response){
+    private void parseJsonFeed(JSONObject response, String type){
         try{
             JSONArray feedArray=response.getJSONArray("feed");
 
@@ -380,7 +399,31 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                 JSONObject feedObj=(JSONObject)feedArray.get(i);
 
                 FeedItem item=new FeedItem();
-                if(feedObj.getString("receiver").isEmpty()) {
+                String interests = feedObj.getString("interests");
+                String[] strings = interests.replace("[", "").replace("]", "").split(", ");
+                if(strings[0].equals("true")){
+                    item.setVegetables(true);
+                }else{
+                    item.setVegetables(false);
+                }if(strings[1].equals("true")){
+                    item.setDairy(true);
+                }else{
+                    item.setDairy(false);
+                }if(strings[2].equals("true")){
+                    item.setMeat(true);
+                }else{
+                    item.setMeat(false);
+                }if(strings[3].equals("true")){
+                    item.setBread(true);
+                }else{
+                    item.setBread(false);
+                }if(strings[4].equals("true")){
+                    item.setFats(true);
+                }else{
+                    item.setFats(false);
+                }
+                String[] interest = item.getInterests();
+                if(feedObj.getString("receiver").isEmpty()&& (type.equals("all")||Arrays.asList(interest).contains(type))) {
                     item.setId(feedObj.getInt("id"));
                     item.setName(feedObj.getString("username"));
 
@@ -395,7 +438,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
-                    item.setUrl(feedObj.getString("interests"));
+
+                    //item.setUrl(feedObj.getString("interests"));
                     item.setUid(feedObj.getString("uid"));
                     item.setDorr(dorr);
 
@@ -465,41 +509,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
 
 
-    public void selectItem(View view){
-        boolean checked = ((CheckBox) view).isChecked();
-        switch (view.getId()){
-            case R.id.vegetable_status:
-                if(checked){
-                    statustags.add("Vegetables");}
-                else{
-                    statustags.remove("Vegetables");}
-                break;
-            case R.id.dairy_status:
-                if(checked){
-                    statustags.add("Milk, Yogurt, Cheese");}
-                else{
-                    statustags.remove("Milk, Yogurt, Cheese");}
-                break;
-            case R.id.meat_status:
-                if(checked){
-                    statustags.add("Meat, Poultry, Fish, Beans, Eggs, Nuts");}
-                else{
-                    statustags.remove("Meat, Poultry, Fish, Beans, Eggs, Nuts");}
-                break;
-            case R.id.bread_status:
-                if(checked){
-                    statustags.add("Bread, Cereal, Rice, Pasta");}
-                else{
-                    statustags.remove("Bread, Cereal, Rice, Pasta");}
-                break;
-            case R.id.fats_status:
-                if(checked){
-                    statustags.add("Fats, Oil, Sweets");}
-                else{
-                    statustags.remove("Fats, Oil, Sweets");}
-                break;
-        }
-    }
+
     public static String getCurrentTimeStamp(){
         try{
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

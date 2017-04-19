@@ -15,6 +15,14 @@
     tools:showIn="@layout/app_bar_welcome_receiver"
     android:scrollbars="vertical"
     android:background="@color/official">
+    <Button
+        android:id="@+id/back_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:text="UNDO SORT"
+        android:tag="all"
+        android:onClick="statusSort"/>
 
     <ListView
         android:id="@+id/list_claim"

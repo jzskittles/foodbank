@@ -20,9 +20,9 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/profilePic"
-            android:background="@drawable/profile"
             android:layout_width="@dimen/feed_item_profile_pic"
             android:layout_height="@dimen/feed_item_profile_pic"
+            android:src="@drawable/profile"
             android:scaleType="fitCenter" >
         </com.android.volley.toolbox.NetworkImageView>
 
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text=""
-                android:visibility="gone"/>
+                android:alpha="0"/>
             <TextView
                 android:id="@+id/name"
                 android:layout_width="fill_parent"
@@ -63,7 +63,6 @@
         android:paddingLeft="@dimen/feed_item_status_pad_left_right"
         android:paddingRight="@dimen/feed_item_status_pad_left_right"
         android:paddingTop="@dimen/feed_item_status_pad_top" />
-
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -142,13 +141,4 @@
         android:background="@color/white"
         android:scaleType="fitXY"
         android:visibility="visible" />
-    <Button
-        android:id="@+id/claim_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:text="CLAIM"
-        android:onClick="claimListener"/>
 </LinearLayout>
