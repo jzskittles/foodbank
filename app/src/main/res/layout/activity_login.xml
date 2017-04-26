@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:scaleType="fitXY"
         android:textColor="#17a32e"
-        android:textSize="50sp"
+        android:textSize="45sp"
         android:gravity="center"
         android:allowUndo="true"
         android:text="Welcome to reFresh!"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="25dp"
         android:text="Please login or register."
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <!--> android:gravity="center" -->
@@ -59,7 +59,7 @@
     <Button
         android:id="@+id/sign_in"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="#087808"
         android:text="Log In"
         android:textColor="@color/white"
@@ -67,7 +67,7 @@
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="#087808"
         android:layout_weight="0.03"
         android:text="Register"
