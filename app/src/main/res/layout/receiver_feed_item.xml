@@ -148,7 +148,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="15dp"
+        android:background="#087808"
         android:text="CLAIM"
         android:onClick="claimListener"/>
 </LinearLayout>

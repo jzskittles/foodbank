@@ -118,6 +118,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         receiver = user.get(SessionManagement.KEY_USERNAME);
         String name = user.get(SessionManagement.KEY_NAME);
         dorr = user.get(SessionManagement.KEY_DORR);
+
         //user, name, orgname, address, phoneNumber, email, dorr
 
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
@@ -425,6 +426,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     item.setFats(false);
                 }
                 String[] interest = item.getInterests();
+                item.setDorr(dorr);
+                //Toast.makeText(getApplicationContext(), feedObj.getString("propic"), Toast.LENGTH_SHORT).show();
                 if(feedObj.getString("receiver").isEmpty()&& (type.equals("all")||Arrays.asList(interest).contains(type))) {
                     item.setId(feedObj.getInt("id"));
                     item.setName(feedObj.getString("username"));
@@ -437,13 +440,13 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     uids.add(feedObj.getString("uid"));
                     item.setStatus(feedObj.getString("statustext"));
                     item.setProfilePic(feedObj.getString("propic"));
+
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
 
                     //item.setUrl(feedObj.getString("interests"));
                     item.setUid(feedObj.getString("uid"));
-                    item.setDorr(dorr);
 
                     feedItems.add(item);
                 }
@@ -497,8 +500,16 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
             startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
         } else if (id == R.id.nav_profile_welcome_receiver) {
             //Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
-        } else if (id == R.id.nav_logout_welcome_receiver) {
+            Intent i = new Intent(this, ProfileReceiver.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("username", receiver);
+            i.putExtras(bundle);
+
+            startActivity(i);
+        } else if (id == R.id.nav_userlocations_welcome_receiver) {
+            startActivity(new Intent(getApplicationContext(), LocationListView.class));
+        }
+        else if (id == R.id.nav_logout_welcome_receiver) {
             //Toast.makeText(getApplicationContext(),"logout Receiver",Toast.LENGTH_SHORT).show();
             session.logoutUser();
         }

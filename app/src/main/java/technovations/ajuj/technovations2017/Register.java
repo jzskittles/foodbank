@@ -98,9 +98,9 @@ public class Register extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
                         try{
-                            Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "successfully inside the try", Toast.LENGTH_SHORT).show();
                             JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
                             if(jsonObject.has("success")){
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(),Login.class));

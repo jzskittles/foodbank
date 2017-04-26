@@ -62,6 +62,7 @@ public class FeedListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.feed_item, null);
+
             FeedItem item = feedItems.get(position);
             String dorrr = item.getDorr();
             if(dorrr != null && dorrr.equals("receiver"))
@@ -85,9 +86,9 @@ public class FeedListAdapter extends BaseAdapter {
 
         TextView uid = (TextView) convertView.findViewById(R.id.number);
         NetworkImageView profilePic = (NetworkImageView) convertView
-                .findViewById(R.id.propic);
-        //FeedImageView feedImageView = (FeedImageView) convertView
-        //        .findViewById(R.id.feedImage1);
+                .findViewById(R.id.profilePic);
+        FeedImageView feedImageView = (FeedImageView) convertView
+                .findViewById(R.id.feedImage1);
 
         FeedItem item = feedItems.get(position);
 
@@ -134,7 +135,7 @@ public class FeedListAdapter extends BaseAdapter {
         profilePic.setImageUrl(item.getProfilePic(), imageLoader);
 
         // Feed image
-        /*if (item.getImge() != null) {
+        if (item.getImge() != null) {
             //feedImageView.setImageUrl(item.getImge(), imageLoader);
             feedImageView.setVisibility(View.VISIBLE);
             feedImageView
@@ -149,7 +150,7 @@ public class FeedListAdapter extends BaseAdapter {
                     });
         } else {
             feedImageView.setVisibility(View.GONE);
-        }*/
+        }
 
         return convertView;
     }

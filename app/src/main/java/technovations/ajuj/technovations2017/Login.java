@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity{
                                 String dorr = jsonObject.getString("dorr");
 
 
-                                session.createLoginSession(user, name, orgname, address, phoneNumber, propic, email, dorr);
+                                session.createLoginSession(user, name, orgname, address, phoneNumber, email, dorr, propic);
                                 if(dorr.equals("donor"))
                                     startActivity(new Intent(getApplicationContext(), WelcomeDonor.class));
                                 if(dorr.equals("receiver"))

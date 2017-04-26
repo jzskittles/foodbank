@@ -14,7 +14,7 @@
     tools:context="technovations.ajuj.technovations2017.WelcomeReceiver"
     tools:showIn="@layout/app_bar_welcome_receiver"
     android:scrollbars="vertical"
-    android:background="@color/official">
+    android:background="#7be163">
     <Button
         android:id="@+id/back_sort"
         android:layout_width="wrap_content"
