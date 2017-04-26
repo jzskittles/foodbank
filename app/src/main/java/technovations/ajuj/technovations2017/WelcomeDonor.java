@@ -74,10 +74,11 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
     private StringRequest request;
     private CheckBox vegetable, dairy, meat, bread, fats;
     private ArrayList<String> statustags;
-    private String receiver;
+    private String receiver, propic;
     private TextView navDrawerStudentName, navDrawerStudentUsername;
     IntentFilter intentFilter;
     private Button vegetables_button, dairy_button, meat_button, bread_button, fats_button;
+    String dorr;
 
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
         @Override
@@ -105,6 +106,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
         session = new SessionManagement(getApplicationContext());
 
@@ -113,6 +115,8 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
         HashMap<String, String> user = session.getUserDetails();
         String sname = user.get(SessionManagement.KEY_NAME);
         receiver = user.get(SessionManagement.KEY_USERNAME);
+        propic = user.get(SessionManagement.KEY_PROPIC);
+        dorr = user.get(SessionManagement.KEY_DORR);
 
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
         navigationView.addHeaderView(header);
@@ -194,6 +198,12 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                             bread.setChecked(false);
                             fats.setChecked(false);
                             statustags.clear();
+                            //Toast.makeText(getApplicationContext(),statustags.toString(), Toast.LENGTH_SHORT).show();
+                            /*statustags.set(0,"false");
+                            statustags.set(1,"false");
+                            statustags.set(2,"false");
+                            statustags.set(3,"false");
+                            statustags.set(4,"false");*/
 
                             if (jsonObject.has("success")) {
                                 Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
@@ -221,6 +231,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                         hashMap.put("statustext", statusMessage.getText().toString());
                         hashMap.put("interests", statustags.toString());
                         hashMap.put("statuses", "pending");
+                        hashMap.put("propic", propic);
                         return hashMap;
                     }
 
@@ -386,6 +397,7 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                 }else{
                     item.setFats(false);
                 }
+                item.setDorr(dorr);
                 if (feedObj.getString("receiver").isEmpty()) {
                     item.setId(feedObj.getInt("id"));
                     item.setName(feedObj.getString("username"));
@@ -395,7 +407,8 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
                         .getString("image");
                 item.setImge(image);*/
                     item.setStatus(feedObj.getString("statustext"));
-                    //item.setProfilePic(feedObj.getString("profilePic"));
+                    item.setProfilePic(feedObj.getString("propic"));
+                    //Toast.makeText(getApplicationContext(), feedObj.getString("propic"),Toast.LENGTH_SHORT).show();
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
@@ -450,7 +463,12 @@ public class WelcomeDonor extends AppCompatActivity implements NavigationView.On
 
             startActivity(i);
             //startActivity(new Intent(getApplicationContext(), ProfileDonor.class));
-        } else if (id == R.id.nav_logout_welcome_donor) {
+        } else if (id == R.id.nav_userlocations_welcome_donor) {
+            //spinner.setVisibility(View.VISIBLE);
+            startActivity(new Intent(getApplicationContext(), LocationListView.class));
+            //spinner.setVisibility(View.GONE);
+        }
+        else if (id == R.id.nav_logout_welcome_donor) {
             session.logoutUser();
         }
 

@@ -4,15 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home_profile_donor"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/home"
             android:title="Home" />
         <item
             android:id="@+id/nav_profile_profile_donor"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/profileicon"
             android:title="Profile" />
         <item
+            android:id="@+id/nav_userlocations_profile_donor"
+            android:icon="@drawable/mapmarker"
+            android:title="Users' Locations" />
+        <item
             android:id="@+id/nav_logout_profile_donor"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/logout"
             android:title="Logout" />
     </group>
 

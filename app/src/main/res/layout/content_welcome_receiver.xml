@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:text="UNDO SORT"
+        android:textColor="@color/white"
+        android:background="#087808"
         android:tag="all"
         android:onClick="statusSort"/>
 

@@ -33,7 +33,7 @@ public class FeedListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<FeedItem> feedItems;
     String dorr;
-    //ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public FeedListAdapter(Activity activity, List feedItems) {
         this.activity = activity;
@@ -84,10 +84,10 @@ public class FeedListAdapter extends BaseAdapter {
         Button fats = (Button)convertView.findViewById(R.id.fats_button);
 
         TextView uid = (TextView) convertView.findViewById(R.id.number);
-        //NetworkImageView profilePic = (NetworkImageView) convertView
-        //        .findViewById(R.id.profilePic);
-        FeedImageView feedImageView = (FeedImageView) convertView
-                .findViewById(R.id.feedImage1);
+        NetworkImageView profilePic = (NetworkImageView) convertView
+                .findViewById(R.id.propic);
+        //FeedImageView feedImageView = (FeedImageView) convertView
+        //        .findViewById(R.id.feedImage1);
 
         FeedItem item = feedItems.get(position);
 
@@ -131,10 +131,10 @@ public class FeedListAdapter extends BaseAdapter {
             fats.setVisibility(View.GONE);
 
         // user profile pic
-        //profilePic.setImageUrl(item.getProfilePic(), imageLoader);
+        profilePic.setImageUrl(item.getProfilePic(), imageLoader);
 
         // Feed image
-        if (item.getImge() != null) {
+        /*if (item.getImge() != null) {
             //feedImageView.setImageUrl(item.getImge(), imageLoader);
             feedImageView.setVisibility(View.VISIBLE);
             feedImageView
@@ -149,7 +149,7 @@ public class FeedListAdapter extends BaseAdapter {
                     });
         } else {
             feedImageView.setVisibility(View.GONE);
-        }
+        }*/
 
         return convertView;
     }

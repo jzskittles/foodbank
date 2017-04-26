@@ -105,6 +105,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+
 
 
 
@@ -434,7 +436,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     //receiver = feedObj.getString("receiver");
                     uids.add(feedObj.getString("uid"));
                     item.setStatus(feedObj.getString("statustext"));
-                    //item.setProfilePic(feedObj.getString("profilePic"));
+                    item.setProfilePic(feedObj.getString("propic"));
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes

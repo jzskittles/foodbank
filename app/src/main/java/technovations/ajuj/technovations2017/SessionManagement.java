@@ -34,6 +34,7 @@ public class SessionManagement {
     public static final String KEY_PHONENUMBER = "phone number";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_DORR = "dorr";
+    public static final String KEY_PROPIC = "propic";
 
     // Constructor
     public SessionManagement (Context context) {
@@ -42,7 +43,7 @@ public class SessionManagement {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String username, String name, String orgname, String address, int phoneNumber, String email, String dorr) {
+    public void createLoginSession(String username, String name, String orgname, String address, int phoneNumber, String email, String dorr, String propic) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_NAME, name);
@@ -51,6 +52,7 @@ public class SessionManagement {
         editor.putString(KEY_PHONENUMBER, String.valueOf(phoneNumber));
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_DORR, dorr);
+        editor.putString(KEY_PROPIC, propic);
         editor.commit();
     }
 
@@ -63,6 +65,7 @@ public class SessionManagement {
         user.put(KEY_PHONENUMBER, pref.getString(KEY_PHONENUMBER, "null"));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, "null"));
         user.put(KEY_DORR, pref.getString(KEY_DORR, "null"));
+        user.put(KEY_PROPIC, pref.getString(KEY_PROPIC, "null"));
         return user;
     }
 

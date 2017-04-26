@@ -5,12 +5,19 @@ package technovations.ajuj.technovations2017;
  */
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,30 +47,44 @@ public class Register extends AppCompatActivity {
     private StringRequest request;
     private String DorR;
     private String URL = "";
+    String Img;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private String propic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_register);
 
+        Typeface face2 = Typeface.createFromAsset(getAssets(), "c_gothic.ttf");
         username = (EditText) findViewById(R.id.username_register);
+        username.setTypeface(face2);
         password = (EditText) findViewById(R.id.password_register);
+        password.setTypeface(face2);
         first_name = (EditText) findViewById(R.id.first_name_register);
+        first_name.setTypeface(face2);
         last_name = (EditText) findViewById(R.id.last_name_register);
+        last_name.setTypeface(face2);
         org_name = (EditText) findViewById(R.id.org_name_register);
+        org_name.setTypeface(face2);
         email = (EditText) findViewById(R.id.email_register);
+        email.setTypeface(face2);
         address = (EditText) findViewById(R.id.address_register);
+        address.setTypeface(face2);
         phoneNumber = (EditText) findViewById(R.id.phone_number_register);
+        phoneNumber.setTypeface(face2);
         donor = (CheckBox) findViewById(R.id.donor_register);
+        donor.setTypeface(face2);
         receiver = (CheckBox) findViewById(R.id.receiver_register);
-        if(donor.isChecked())
-            DorR = "donor";
-        else
-            DorR = "receiver";
+        receiver.setTypeface(face2);
+
 
         register = (Button) findViewById(R.id.register_register);
+        register.setTypeface(face2);
         back = (Button) findViewById(R.id.back_register);
+        back.setTypeface(face2);
         guideline = (TextView) findViewById(R.id.guideline);
+        guideline.setTypeface(face2);
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -109,6 +130,7 @@ public class Register extends AppCompatActivity {
                         hashMap.put("address", address.getText().toString());
                         hashMap.put("phoneNumber", phoneNumber.getText().toString());
                         hashMap.put("dorr", DorR);
+                        hashMap.put("propic",propic);
 
                         return hashMap;
                     }
@@ -126,6 +148,32 @@ public class Register extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    public void selectPropic(View v){
+        propic = v.getTag().toString();
+    }
+
+    public void selectDorR(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+            case R.id.donor_register:
+                if (checked) {
+                    DorR = "donor";
+                } else {
+                    DorR = "receiver";
+                }
+                break;
+            case R.id.receiver_register:
+                if (checked) {
+                    DorR = "receiver";
+                } else {
+                    DorR = "donor";
+                }
+                break;
+        }
     }
 
 }

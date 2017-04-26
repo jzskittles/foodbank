@@ -19,10 +19,9 @@
         android:paddingRight="@dimen/feed_item_padding_left_right" >
 
         <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/profilePic"
+            android:id="@+id/propic"
             android:layout_width="@dimen/feed_item_profile_pic"
             android:layout_height="@dimen/feed_item_profile_pic"
-            android:src="@drawable/profile"
             android:scaleType="fitCenter" >
         </com.android.volley.toolbox.NetworkImageView>
 

@@ -3,7 +3,7 @@
     tools:context=".Login"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#070d52"
+    android:background="@color/official"
     android:paddingBottom="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
@@ -13,32 +13,37 @@
     xmlns:tools="http://schemas.android.com/tools">
     <TextView
         android:id="@+id/textView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textColor="#b6eff9"
-        android:textSize="25sp"
+        android:layout_height="110dp"
+        android:layout_width="wrap_content"
+        android:scaleType="fitXY"
+        android:textColor="#17a32e"
+        android:textSize="50sp"
         android:gravity="center"
         android:allowUndo="true"
-        android:text="Welcome to DeLITE!"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:text="Welcome to reFresh!"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:src="@drawable/mylogo2" />
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="241dp"
-        android:textColor="#fbf8f8"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
         android:gravity="center"
-        android:layout_weight="0.08"
-        android:text="Please login or register"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_gravity="center_horizontal"/>
+        android:textSize="30sp"
+        android:text="Please login or register."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--> android:gravity="center" -->
+
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#f0f8f9"
-        android:textColorHint="#f7efef"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:inputType="text"
         android:maxLines="1"
         android:hint="Username"/>
@@ -46,8 +51,8 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#f0f8f9"
-        android:textColorHint="#f7efef"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         android:maxLines="1"
         android:inputType="textPassword"
         android:hint="Password"/>
@@ -55,14 +60,18 @@
         android:id="@+id/sign_in"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="#087808"
         android:text="Log In"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp" />
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="#087808"
         android:layout_weight="0.03"
         android:text="Register"
+        android:textColor="@color/white"
         android:layout_marginTop="4dp" />
 
 </LinearLayout>

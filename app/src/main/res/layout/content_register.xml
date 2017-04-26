@@ -25,12 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white"
-                android:text="Hi
-                        \n\nGuidelines will go here.
-                        \n\nAgreements, etc etc etc.
-                        \n\nDifference between receiver and donor
-                        \n\nAmong other things"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:text="Welcome to ReFresh!\n
+\nDonors should be any restaurant, local market, or grocery store that would be interested in connecting with food banks to donate any potential leftover foods. There is no limit or minimum you must donate.\n
+\nReceivers should be food banks, homeless shelters, or any nonprofit organizations that collect non-perishable goods.
+"
+                android:layout_gravity="center"
                 android:id="@+id/guideline" />
 
             <TextView
@@ -38,65 +39,118 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
-                android:text="I have reviewed and agree to follow the Y.E.S. guidelines. I understand that to fulfill the requirements for the Y.E.S. medal, I must complete the required hours fifty (50) days before the completion of my senior year. I further understand that I must submit proper documentation in a timely manner as outlined in the Y.E.S. guidelines.
-                \n\nIf at any time during this process I falsify documentation, I understand that I will automatically be removed from the Y.E.S. program."
                 android:id="@+id/agreement1"
-                android:textColor="@color/white"/>
+                android:textColor="@color/black"/>
 
             <EditText android:id="@+id/first_name_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="First Name"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/last_name_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Last Name"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/org_name_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Organization Name"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/address_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Address"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/phone_number_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Phone Number"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/email_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Email"
                 android:inputType="textEmailAddress" android:maxLines="1"
-                android:textColor="@color/white"
-                android:textColorHint="#f7efef" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <EditText android:id="@+id/username_register" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="Username"
                 android:inputType="text" android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef"/>
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"/>
 
             <EditText android:id="@+id/password_register" android:layout_width="match_parent"
                 android:layout_height="wrap_content"  android:hint="@string/prompt_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="#f0f8f9"
-                android:textColorHint="#f7efef"/>
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:text="Select a profile picture below."
+                android:layout_gravity="center"
+                android:id="@+id/selectpropic" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button android:id="@+id/pinkpng"
+                    android:layout_width="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/pinkpng"
+                    android:layout_marginLeft="12dp"
+                    android:tag="https://2017ajuj.000webhostapp.com/pinkpng.png"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPropic"/>
+                <Button android:id="@+id/greenpng"
+                    android:layout_width="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/greenpng"
+                    android:layout_marginLeft="12dp"
+                    android:tag="https://2017ajuj.000webhostapp.com/greenpng.png"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPropic"/>
+                <Button android:id="@+id/purplepng"
+                    android:layout_width="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/purplepng"
+                    android:layout_marginLeft="12dp"
+                    android:tag="https://2017ajuj.000webhostapp.com/purplepng.png"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPropic"/>
+                <Button android:id="@+id/yellowpng"
+                    android:layout_width="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/yellowpng"
+                    android:layout_marginLeft="12dp"
+                    android:tag="https://2017ajuj.000webhostapp.com/yellowpng.png"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPropic"/>
+                <Button android:id="@+id/bluepng"
+                    android:layout_width="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/bluepng"
+                    android:layout_marginLeft="12dp"
+                    android:tag="https://2017ajuj.000webhostapp.com/bluepng.png"
+                    android:layout_height="wrap_content"
+                    android:onClick="selectPropic"/>
+            </LinearLayout>
+
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,16 +170,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Donor"
-                        android:textColor="#f0f8f9"
-                        android:buttonTint="@color/white" />
+                        android:textColor="@color/black"
+                        android:buttonTint="@color/black"
+                        android:onClick="selectDorR"/>
 
                     <CheckBox
                         android:id="@+id/receiver_register"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Receiver"
-                        android:textColor="#f0f8f9"
-                        android:buttonTint="@color/white"/>
+                        android:textColor="@color/black"
+                        android:buttonTint="@color/black"
+                        android:onClick="selectDorR"/>
                 </TableRow>
 
 
@@ -135,7 +191,10 @@
 
             <Button android:id="@+id/register_register"
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp" android:text="Register"
+                android:layout_marginTop="16dp"
+                android:text="Register"
+                android:textColor="@color/white"
+                android:background="#087808"
                 android:layout_height="40dp"
                 android:layout_weight="0.03" />
             <!-- style = "@style/loginButton"-->
@@ -143,7 +202,9 @@
             <Button
                 android:layout_width="wrap_content"
                 android:text="Back"
+                android:textColor="@color/white"
                 android:id="@+id/back_register"
+                android:background="#087808"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="40dp"

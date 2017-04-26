@@ -2,6 +2,7 @@ package technovations.ajuj.technovations2017;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -61,6 +62,9 @@ public class ProfileReceiver extends AppCompatActivity
     private List<FeedItem> feedItems;
     private String URL_FEED = "https://2017ajuj.000webhostapp.com/status.json";
     private Button vegetables, dairy, meat, bread, fats;
+    public static String mapaddress;
+    public static String organizname;
+    String dorr, username1;
 
 
   /*  String URL = "http://ajuj.comlu.com/checkHours.php";
@@ -82,16 +86,24 @@ public class ProfileReceiver extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
 
 
         session = new SessionManagement(getApplicationContext());
+        Typeface face2 = Typeface.createFromAsset(getAssets(), "c_gothic.ttf");
         profileUsername = (TextView) findViewById(R.id.profileUsername);
+        profileUsername.setTypeface(face2);
         profileName = (TextView) findViewById(R.id.profileName);
+        profileName.setTypeface(face2);
         profileEmail = (TextView) findViewById(R.id.profileEmail);
+        profileEmail.setTypeface(face2);
         profileNumber= (TextView) findViewById(R.id.profileNumber);
+        profileNumber.setTypeface(face2);
         profileAddress= (TextView) findViewById(R.id.profileAddress);
+        profileAddress.setTypeface(face2);
         profileOrganization = (TextView) findViewById(R.id.profileOrganization);
+        profileOrganization.setTypeface(face2);
 
         /**
          * Call this function whenever you want to check user login
@@ -103,13 +115,13 @@ public class ProfileReceiver extends AppCompatActivity
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
         username = user.get(SessionManagement.KEY_USERNAME);
-        final String username1 = user.get(SessionManagement.KEY_USERNAME);
+        username1 = user.get(SessionManagement.KEY_USERNAME);
         String name = user.get(SessionManagement.KEY_NAME);
         String email = user.get(SessionManagement.KEY_EMAIL);
         String orgname = user.get(SessionManagement.KEY_ORGNAME);
         String address = user.get(SessionManagement.KEY_ADDRESS);
         int phoneNumber = Integer.parseInt(user.get(SessionManagement.KEY_PHONENUMBER));
-        String dorr = user.get(SessionManagement.KEY_DORR);
+        dorr = user.get(SessionManagement.KEY_DORR);
 
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
         navigationView.addHeaderView(header);
@@ -213,6 +225,27 @@ public class ProfileReceiver extends AppCompatActivity
         startActivity(i);
     }
 
+    public static String getMapAddress()
+    {
+        return mapaddress;
+    }
+
+    public static String getMapOrg()
+    {
+        return organizname;
+    }
+
+    public void addressRedirect(View v)
+    {
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        TextView tv = (TextView)vwParentRow.getChildAt(5);
+        TextView tv2 = (TextView)vwParentRow.getChildAt(4);
+        mapaddress = tv.getText().toString().split(":")[1].trim();
+        organizname = tv2.getText().toString().split(":")[1].trim();
+        Toast.makeText(getApplicationContext(), mapaddress, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), MapsFinal.class));
+    }
+
     private void parseJsonFeed(JSONObject response) {
         try {
             JSONArray feedArray = response.getJSONArray("feed");
@@ -223,6 +256,7 @@ public class ProfileReceiver extends AppCompatActivity
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
 
                 FeedItem item = new FeedItem();
+                item.setDorr(dorr);
                 //Toast.makeText(getApplicationContext(),""+feedObj.getInt("id")+feedObj.getString("receiver"),Toast.LENGTH_SHORT).show();
                 if(feedObj.getString("receiver").equals(username)){
                 item.setReceiver(feedObj.getString("receiver"));
@@ -237,7 +271,7 @@ public class ProfileReceiver extends AppCompatActivity
                 item.setImge(image);*/
                     //receiver = feedObj.getString("receiver");
                     item.setStatus(feedObj.getString("statustext"));
-                    //item.setProfilePic(feedObj.getString("profilePic"));
+                    item.setProfilePic(feedObj.getString("propic"));
                     item.setTimeStamp(feedObj.getString("timestamps"));
 
                     // url might be null sometimes
@@ -324,12 +358,28 @@ public class ProfileReceiver extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_home_profile_receiver) {
-            //Toast.makeText(getApplicationContext(),"Welcome Receiver",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
+            if(dorr.equals("donor")){
+                Toast.makeText(getApplicationContext(),"Welcome Donor",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), WelcomeDonor.class));
+            }else
+                startActivity(new Intent(getApplicationContext(), WelcomeReceiver.class));
         } else if (id == R.id.nav_profile_profile_receiver) {
-            //Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
-        } else if (id == R.id.nav_logout_profile_receiver) {
+            Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
+            if(dorr.equals("receiver")){
+                Toast.makeText(getApplicationContext(),"Profile Receiver",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, ProfileReceiver.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username1);
+                i.putExtras(bundle);
+
+                startActivity(i);
+                //startActivity(new Intent(getApplicationContext(), ProfileDonor.class));
+            }else
+                startActivity(new Intent(getApplicationContext(), ProfileDonor.class));
+        }else if (id == R.id.nav_userlocations_profile_receiver){
+            startActivity(new Intent(getApplicationContext(), LocationListView.class));
+        }
+        else if (id == R.id.nav_logout_profile_receiver) {
             session.logoutUser();
         }
 

@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
         <EditText
             android:id="@+id/status"
             android:hint="What would you like to contribute?"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#f0f8f9"
-            android:textColorHint="#f7efef"/>
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -41,48 +41,55 @@
                     android:id="@+id/vegetable_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vegetable"
-                    android:textColor="#f0f8f9"
-                    android:buttonTint="@color/white"
+                    android:text="Veggies"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:textSize="13dp"
                     android:onClick="selectItem"/>
                 <CheckBox
                     android:id="@+id/dairy_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dairy"
-                    android:textColor="#f0f8f9"
-                    android:buttonTint="@color/white"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:textSize="13dp"
                     android:onClick="selectItem"/>
                 <CheckBox
                     android:id="@+id/meat_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Meat"
-                    android:textColor="#f0f8f9"
-                    android:buttonTint="@color/white"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:textSize="13dp"
                     android:onClick="selectItem"/>
                 <CheckBox
                     android:id="@+id/bread_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bread"
-                    android:textColor="#f0f8f9"
-                    android:buttonTint="@color/white"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:textSize="13dp"
                     android:onClick="selectItem"/>
                 <CheckBox
                     android:id="@+id/fats_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fats"
-                    android:textColor="#f0f8f9"
-                    android:buttonTint="@color/white"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/black"
+                    android:textSize="13dp"
                     android:onClick="selectItem"/>
         </LinearLayout>
         <Button android:id="@+id/submit_status"
             android:layout_width="wrap_content"
             android:layout_marginTop="16dp" android:text="Submit"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:background="#087808"
+            android:layout_height="30dp"
+            android:gravity="center"
             android:layout_weight="0.03" />
     </LinearLayout>
     <ListView

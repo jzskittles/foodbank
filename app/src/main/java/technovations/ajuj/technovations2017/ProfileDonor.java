@@ -7,6 +7,7 @@ package technovations.ajuj.technovations2017;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -80,6 +81,8 @@ public class ProfileDonor extends AppCompatActivity
     int phoneNumber;
     private TabHost tabhost;
     private Button vegetables_button, dairy_button, meat_button, bread_button, fats_button;
+    public static String mapaddress;
+    public static String organizname;
 
     private ListView tab1, tab2;
 
@@ -103,6 +106,8 @@ public class ProfileDonor extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+
 
         final String username;
         if (savedInstanceState == null) {
@@ -117,12 +122,19 @@ public class ProfileDonor extends AppCompatActivity
         }
         requestQueue1 = Volley.newRequestQueue(this);
 
+        Typeface face2 = Typeface.createFromAsset(getAssets(), "c_gothic.ttf");
         profileUsername = (TextView) findViewById(R.id.profileUsername);
+        profileUsername.setTypeface(face2);
         profileName = (TextView) findViewById(R.id.profileName);
+        profileName.setTypeface(face2);
         profileEmail = (TextView) findViewById(R.id.profileEmail);
+        profileEmail.setTypeface(face2);
         profileNumber= (TextView) findViewById(R.id.profileNumber);
+        profileNumber.setTypeface(face2);
         profileAddress= (TextView) findViewById(R.id.profileAddress);
+        profileAddress.setTypeface(face2);
         profileOrganization = (TextView) findViewById(R.id.profileOrganization);
+        profileOrganization.setTypeface(face2);
 
 
         request = new StringRequest(Request.Method.POST, "https://2017ajuj.000webhostapp.com/fetchUser.php", new Response.Listener<String>() {
@@ -250,7 +262,7 @@ public class ProfileDonor extends AppCompatActivity
 
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
-        final String username1 = user.get(SessionManagement.KEY_USERNAME);
+        username1 = user.get(SessionManagement.KEY_USERNAME);
         String sname = user.get(SessionManagement.KEY_NAME);
         String email = user.get(SessionManagement.KEY_EMAIL);
         String orgname = user.get(SessionManagement.KEY_ORGNAME);
@@ -341,6 +353,27 @@ public class ProfileDonor extends AppCompatActivity
         startActivity(i);
     }
 
+    public static String getMapAddress()
+    {
+        return mapaddress;
+    }
+
+    public static String getMapOrg()
+    {
+        return organizname;
+    }
+
+    public void addressRedirect(View v)
+    {
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        TextView tv = (TextView)vwParentRow.getChildAt(5);
+        TextView tv2 = (TextView)vwParentRow.getChildAt(4);
+        mapaddress = tv.getText().toString().split(":")[1].trim();
+        organizname = tv2.getText().toString().split(":")[1].trim();
+        Toast.makeText(getApplicationContext(), mapaddress, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), MapsFinal.class));
+    }
+
     private void parseJsonFeed(JSONObject response, String user) {
         try {
             JSONArray feedArray = response.getJSONArray("feed");
@@ -360,8 +393,9 @@ public class ProfileDonor extends AppCompatActivity
                 item.setImge(image);*/
                     //receiver = feedObj.getString("receiver");
                     item.setStatus(feedObj.getString("statustext"));
-                    //item.setProfilePic(feedObj.getString("profilePic"));
+                    item.setProfilePic(feedObj.getString("propic"));
                     item.setTimeStamp(feedObj.getString("timestamps"));
+                    item.setDorr(dorr);
 
                     // url might be null sometimes
                     //item.setUrl(feedObj.getString("interests"));
@@ -473,7 +507,10 @@ public class ProfileDonor extends AppCompatActivity
                 //startActivity(new Intent(getApplicationContext(), ProfileDonor.class));
             }else
                 startActivity(new Intent(getApplicationContext(), ProfileReceiver.class));
-        } else if (id == R.id.nav_logout_profile_donor) {
+        } else if (id == R.id.nav_userlocations_profile_donor){
+            startActivity(new Intent(getApplicationContext(), LocationListView.class));
+        }
+        else if (id == R.id.nav_logout_profile_donor) {
             session.logoutUser();
         }
 
