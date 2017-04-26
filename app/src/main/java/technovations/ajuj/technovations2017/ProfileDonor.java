@@ -340,6 +340,19 @@ public class ProfileDonor extends AppCompatActivity
         //String category = v.getTag().toString();
     }
 
+    public void profileRedirect(View v){
+        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+        TextView tv = (TextView)vwParentRow.getChildAt(1);
+        String user = tv.getText().toString();
+
+        Intent i = new Intent(this, ProfileDonor.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", user);
+        i.putExtras(bundle);
+
+        startActivity(i);
+    }
+
     public static String getMapAddress()
     {
         return mapaddress;
@@ -360,21 +373,6 @@ public class ProfileDonor extends AppCompatActivity
         Toast.makeText(getApplicationContext(), mapaddress, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(), MapsFinal.class));
     }
-
-    public void profileRedirect(View v){
-        LinearLayout vwParentRow = (LinearLayout)v.getParent();
-        TextView tv = (TextView)vwParentRow.getChildAt(1);
-        String user = tv.getText().toString();
-
-        Intent i = new Intent(this, ProfileDonor.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("username", user);
-        i.putExtras(bundle);
-
-        startActivity(i);
-    }
-
-
 
     private void parseJsonFeed(JSONObject response, String user) {
         try {

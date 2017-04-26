@@ -15,6 +15,13 @@
     tools:showIn="@layout/app_bar_location_list_view"
     android:scrollbars="vertical"
     android:background="#abf4c4">
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:text="Location"/>
     <ListView
         android:id="@+id/ListView01"
         android:layout_height="match_parent"

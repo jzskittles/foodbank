@@ -65,8 +65,11 @@ public class FeedListAdapter extends BaseAdapter {
 
             FeedItem item = feedItems.get(position);
             String dorrr = item.getDorr();
-            if(dorrr != null && dorrr.equals("receiver"))
+            if(dorrr != null && dorrr.equals("receiver")){
                 convertView = inflater.inflate(R.layout.receiver_feed_item, null);
+                if(item.getReceiver()!=null && !item.getReceiver().equals(""))
+                    convertView = inflater.inflate(R.layout.feed_item, null);
+            }
         }
 
         //if (imageLoader == null)

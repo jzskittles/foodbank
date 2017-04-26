@@ -70,7 +70,7 @@
     <string name="title_activity_profile_donor">ProfileDonor</string>
     <string name="title_activity_welcome_receiver">WelcomeReceiver</string>
     <string name="title_activity_profile_receiver">ProfileReceiver</string>
-    <string name="title_activity_location_list_view">LocationListView</string>
+    <string name="title_activity_location_list_view">Users Locations</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_maps_final">MapsFinal</string>
 

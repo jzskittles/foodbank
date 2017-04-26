@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -58,7 +59,9 @@ public class LocationListView extends AppCompatActivity implements NavigationVie
     public static AssetManager mgr;
     private ProgressDialog pd;
     private String dorr;
-    private String username1;
+    private String username1, receiver;
+    private TextView navDrawerStudentName, navDrawerStudentUsername, description;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +78,11 @@ public class LocationListView extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
+        navigationView.addHeaderView(header);
+
         session = new SessionManagement(getApplicationContext());
+        session.checkLogin();
         LocationListView.context = getApplicationContext();
         //pd = new ProgressDialog(LocationListView.this);
         //pd.setTitle("Loading");
@@ -92,9 +99,28 @@ public class LocationListView extends AppCompatActivity implements NavigationVie
         dorr = user.get(SessionManagement.KEY_DORR);
         username1 = user.get(SessionManagement.KEY_USERNAME);
         address = user.get(SessionManagement.KEY_ADDRESS);
+        receiver = user.get(SessionManagement.KEY_USERNAME);
+        String name = user.get(SessionManagement.KEY_NAME);
+        dorr = user.get(SessionManagement.KEY_DORR);
 
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_welcome_nav, null);
-        navigationView.addHeaderView(header);
+        Typeface face2 = Typeface.createFromAsset(getAssets(), "c_gothic.ttf");
+
+        description = (TextView)findViewById(R.id.description);
+        description.setTypeface(face2);
+
+        if(dorr.equals("receiver"))
+            description.setText("Nearby Donors");
+        else
+            description.setText("Nearby Receivers");
+
+
+        navDrawerStudentName = (TextView) header.findViewById(R.id.navDrawerName);
+        navDrawerStudentUsername = (TextView) header.findViewById(R.id.navDrawerUsername);
+
+        navDrawerStudentName.setText(name);
+        navDrawerStudentUsername.setText(receiver);
+
+
 
         mainListView = (ListView) findViewById(R.id.ListView01);
         listAdapter = new LocationItemAdapter(this, allLocations);

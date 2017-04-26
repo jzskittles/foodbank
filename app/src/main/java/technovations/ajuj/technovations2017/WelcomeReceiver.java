@@ -239,6 +239,8 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
         startActivity(i);
     }
 
+
+
     public void claimListener(View v){
         LinearLayout vwParentRow = (LinearLayout)v.getParent();
         LinearLayout child1 = (LinearLayout)vwParentRow.getChildAt(0);
@@ -257,7 +259,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
                     if (jsonObject.has("successUpdate")) {
                         feedItems.clear();
                         getFeed("all");
-                        Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successUpdate"), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successUpdate"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successInsert"), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("successDelete"), Toast.LENGTH_SHORT).show();
                     } else {
@@ -299,7 +301,7 @@ public class WelcomeReceiver extends AppCompatActivity implements NavigationView
 
                     JSONObject jsonObject = new JSONObject(response);
                     if(jsonObject.has("success")) {
-                        Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "SUCCESS: " + jsonObject.getString("success"), Toast.LENGTH_SHORT).show();
                         String user = jsonObject.getString("user");
                         String interests = jsonObject.getString("interests");
                         String receiver = jsonObject.getString("receiver");
